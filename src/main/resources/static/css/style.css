@@ -1,0 +1,394 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 200px;
+    background-color: white;
+
+
+}
+
+.top-bar {
+    display: flex; /* Utilisez flexbox pour l'alignement */
+    justify-content: center; /* Centrez les éléments horizontalement */
+    align-items: center; /* Centrez les éléments verticalement */
+    height: 30px; /* Exemple de hauteur, à ajuster selon vos besoins */
+    background-color: #4c4c4c; /* Couleur d'exemple, à ajuster selon vos besoins */
+    font-size: 0.85em;
+}
+
+/* Diminue la taille de la police pour les écrans de taille moyenne */
+@media (max-width: 992px) {
+    .top-bar {
+        font-size: 1em;
+        height: 60px;
+    }
+}
+
+/* Diminue encore plus la taille de la police pour les petits écrans */
+@media (max-width: 850px) {
+    .heures p{
+        color:transparent;
+        display: none;
+    }
+}
+
+
+
+.heures {
+    display: flex;
+    justify-content: center; /* Centre les éléments horizontalement */
+    width: 100%;
+    color: white;
+}
+
+.heures p {
+    margin: 0;
+    margin-right: 20px; /* Appliquez une marge droite à chaque <p> */
+}
+
+.heures p:last-child {
+    margin-right: 0; /* Supprimez la marge droite du dernier <p> */
+}
+
+body {
+    background-color: #f3f1f1;
+}
+
+.content {
+    margin-left:15%; /* Marge à gauche */
+    margin-right:15%; /* Marge à droite */
+
+    padding-bottom: 200px;
+
+}
+.welcome{
+    border: 3px solid #ddd;
+    padding: 20px;
+    max-width: 100%;
+    background-color:paleturquoise;
+}
+.confirm{
+    margin: auto;
+    max-width: 80%;
+    padding: 20px; /* 10px est le padding vertical (haut/bas) et 5px est le padding horizontal (gauche/droit) */
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:paleturquoise;
+}
+#footer {
+    background-color: #4c4c4c;
+    padding: 20px;
+    font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    color: white;
+    margin-top: 100px;
+}
+
+
+
+.footer-container {
+    display: flex;
+    justify-content: space-between; /* Espacement entre les sections */
+    align-items: center; /* Centrage vertical des éléments */
+    padding: 20px 0; /* Espace au-dessus et au-dessous du footer */
+    background-color: #333; /* Couleur d'arrière-plan, à ajuster selon vos préférences */
+
+}
+
+.footer-section {
+    flex-basis: 30%; /* Pour diviser le footer en 3 sections approximativement égales */
+    text-align: center; /* Centre le contenu de chaque section */
+}
+
+.footer-links {
+    list-style-type: none; /* Supprime les puces des listes */
+    padding: 0;
+
+}
+
+.footer-links a {
+    text-decoration: none; /* Pour enlever le soulignement */
+    color:#ffd071; /* Couleur des liens */
+
+}
+
+.footer-links li {
+    margin: 5px 0; /* Espacement entre les liens */
+
+}
+
+.footer-section #current-time {
+    font-size: 14px;            /* Taille de la police */
+    color: #f4f4f4;            /* Couleur de la police */
+
+}
+
+
+header {
+    height: 150px;
+}
+
+.header-bg {
+    background-color: #8ba676; /* Couleur de fond du header */
+    padding: 15px; /* Espacement interne du header */
+}
+
+header h2 {
+    color: #4c4c4c;
+    font-weight: lighter;
+    padding-right: 20px;
+}
+/*****************************************************/
+
+/***********************************************************************************************/
+
+/* Style de la bannière */
+.banner {
+    background-image: url('../img/Banner.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center; /* Centre l'image horizontalement et verticalement */
+    background-origin: border-box; /* Garantit que l'image est centrée par rapport à la boîte de bordure */
+    height: 50vh;
+}
+/* Banner pour les écrans de taille moyenne */
+@media (max-width: 992px) {
+    .banner {
+        background-image: url('../img/Banner.webp');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center; /* Centre l'image horizontalement et verticalement */
+        background-origin: border-box; /* Garantit que l'image est centrée par rapport à la boîte de bordure */
+        height: 50vh;
+    }
+}
+
+/* Banner pour les petits écrans */
+@media (max-width: 768px) {
+    .banner {
+        background-image: url('../img/Banner.webp');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center; /* Centre l'image horizontalement et verticalement */
+        background-origin: border-box; /* Garantit que l'image est centrée par rapport à la boîte de bordure */
+        height: 50vh;
+    }
+}
+
+.book-box {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px;
+}
+
+.book-box img {
+    max-width: 100%;
+    height: auto;
+}
+
+.content-wrapper {
+    margin-bottom: 100px; /* Ajoutez une marge inférieure pour éviter que le footer ne cache le contenu */
+}
+
+
+/******************************************************************************/
+
+.logo {
+    max-width: 100%; /* Largeur maximale du logo */
+}
+
+
+.logo-img {
+    max-width: 100px;
+    max-height: 100px;
+    margin-left: 10px;
+}
+
+.navbar-brand {
+    width: 250px; /* Ajustez cette valeur en fonction de vos besoins */
+    display: flex; /* Pour aligner horizontalement le logo et le texte */
+    align-items: center; /* Centre verticalement le logo et le texte */
+}
+
+
+.brand-name {
+    margin-left: 10px;  /* Espacement entre le logo et le texte */
+    color: mediumseagreen;
+    font-size: 1.5em;  /* Ajustez selon votre préférence */
+}
+/* Pour la largeur d'écran <= 768px */
+@media (max-width: 768px) {
+    .logo-img {
+        max-width: 60px;      /* Réduction de la taille du logo */
+        max-height: 60px;     /* Réduction de la taille du logo */
+    }
+
+    .navbar-brand {
+        flex-direction: column;  /* Pour mettre le texte sous le logo */
+        align-items: center;     /* Centrage horizontal */
+        width: auto;             /* Laisser la largeur s'adapter automatiquement */
+    }
+
+    .brand-name {
+        margin-left: 0;         /* Retirer l'espacement à gauche */
+        font-size: 1.2em;       /* Réduction de la taille du texte */
+    }
+}
+/****************************************************************************************************
+
+
+/* Styles pour #monNavUnique */
+#monNavUnique ul {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+#monNavUnique li a {
+    color: #007dc7;
+    width: 100%;
+    padding: 20px;
+    border-left: 5px solid;
+    position: relative;
+    text-decoration: none;
+}
+
+
+#monNavUnique li a:hover {
+    border-bottom: 0px;
+    color: #fff;
+}
+
+#monNavUnique li:first-child a {
+    border-left: 10px solid #3498db;
+}
+
+#monNavUnique li:nth-child(2) a {
+    border-left: 10px solid #ffd071;
+}
+
+#monNavUnique li:nth-child(3) a {
+    border-left: 10px solid #f0776c;
+}
+
+#monNavUnique li:last-child a {
+    border-left: 10px solid #1abc9c;
+}
+
+#monNavUnique li a:after {
+    content: "";
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 0px;
+    position: absolute;
+    transition: all 0.3s ease 0s;
+}
+
+#monNavUnique li a:hover:after {
+    width: 100%;
+}
+
+#monNavUnique li:first-child a:after {
+    background: #3498db;
+}
+
+#monNavUnique li:nth-child(2) a:after {
+    background: #ffd071;
+}
+
+#monNavUnique li:nth-child(3) a:after {
+    background: #f0776c;
+}
+
+#monNavUnique li:last-child a:after {
+    background: #1abc9c;
+}
+/* Pour la largeur d'écran <= 992px */
+@media (max-width: 992px) {
+    #monNavUnique li a {
+        border-left: none !important; /* retirer la bordure à gauche */
+        padding: 5px 20px; /* réduction du padding vertical ici */
+    }
+
+    #monNavUnique ul {
+        display: block; /* pour que les liens soient l'un sous l'autre */
+    }
+}
+
+@font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 100;
+    src: local('Lato Hairline'), local('Lato-Hairline'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/boeCNmOCCh-EWFLSfVffDg.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Lato Light'), local('Lato-Light'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/KT3KS9Aol4WfR6Vas8kNcg.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Lato Regular'), local('Lato-Regular'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/9k-RPmcnxYEPm8CNFsH2gg.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Lato Bold'), local('Lato-Bold'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/wkfQbvfT_02e2IWO3yYueQ.woff) format('woff');
+}
+
+
+/************************************Notification TOAST********************************************/
+.toast {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    background-color: #3498db;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+.toast .close {
+    position: absolute;
+    top: 5px; /* ou ajustez selon votre besoin */
+    right: 10px; /* ou ajustez selon votre besoin */
+}
+.toast {
+    border-radius: 3px;
+}
+.toast {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.toast {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+/******accueil***********/
+.custom-links a {
+    text-decoration: none;  /* Suppression du soulignement */
+    font-weight: bold;      /* Texte en gras */
+}
+.custom-title, .custom-desc {
+    text-align: center;  /* Centrer le titre et la description */
+}
+.custom-images img {
+    vertical-align: bottom;  /* Aligner les images en bas */
+
+
+}
+.custom-images {
+    margin-left:50px;
+}
