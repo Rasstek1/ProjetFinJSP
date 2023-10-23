@@ -4,16 +4,12 @@
 
 <%@ include file="header.jsp" %>
 
-<h1>Photos du chalet</h1>
-
-<h2>Détails du Chalet</h2>
-<p><strong>Numéro du Chalet :</strong> ${chalet.numChalet}</p>
-<p><strong>Nombre de Chambres :</strong> ${chalet.nombreChambres}</p>
-<p><strong>Description :</strong> ${chalet.description}</p>
-<p><strong>Prix :</strong> ${chalet.prix}</p>
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
 
 <div id="chaletCarousel" class="carousel slide" data-ride="carousel">
-
     <!-- Indicateurs (miniatures) -->
     <ol class="carousel-indicators">
         <c:forEach var="photo" items="${photos}" varStatus="status">
@@ -25,7 +21,8 @@
     <div class="carousel-inner">
         <c:forEach var="photo" items="${photos}" varStatus="status">
             <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
-                <img src="${photo.path}" alt="Photo du chalet ${status.index + 1}" class="d-block w-100">
+                <!-- Utilisation du même format de chemin d'accès que pour la photo principale -->
+                <img src="uploads/chalet${chalet.numChalet}_${status.index + 1}.jpg" alt="Photo du chalet ${chalet.numChalet}" class="d-block w-100">
             </div>
         </c:forEach>
     </div>
@@ -39,6 +36,17 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Suivant</span>
     </a>
+</div>
+<div class="container">
+    <h1>Photos du chalet</h1>
+    <h2>Détails du Chalet</h2>
+    <p><strong>Numéro du Chalet :</strong> ${chalet.numChalet}</p>
+    <p><strong>Nombre de Chambres :</strong> ${chalet.nombreChambres}</p>
+    <p><strong>Description :</strong> ${chalet.description}</p>
+    <p><strong>Prix :</strong> ${chalet.prix}</p>
+
+
+
 </div>
 
 

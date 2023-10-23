@@ -42,13 +42,15 @@
                              alt="Icone Chambre"> ${chalet.nombreChambres} chbre.
                     </p>
                     <!-- Bouton Détails -->
-                    <a href="photo.jsp?numChalet=${chalet.numChalet}" class="btn btn-primary mt-2">Détails</a>
+                    <a href="${pageContext.request.contextPath}/photo?numChalet=${chalet.numChalet}" class="btn btn-primary mt-2">Détails</a>
+
                 </div>
             </div>
         </div>
     </div>
     </c:forEach>
 </div>
+
 
 <!-- Inclusion du pied de page -->
 <%@ include file="footer.jsp" %>

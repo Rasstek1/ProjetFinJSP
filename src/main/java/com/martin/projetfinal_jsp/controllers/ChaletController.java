@@ -59,11 +59,13 @@ public class ChaletController {
             return "error";  // Change to the appropriate view name for your error page
         }
 
-        // Ajoutez les détails du chalet au modèle
+        // Ajoutez les détails du chalet et la liste des photos au modèle
         model.addAttribute("chalet", chalet);
+        model.addAttribute("photos", chalet.getListePhotos());
 
         // Retournez le nom de la vue JSP
         return "photo";
     }
+
 
 }
