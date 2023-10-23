@@ -16,7 +16,7 @@ public class ProjetFinalBeansConfiguration {
         return new JdbcTemplate(dataSource);
     }
 
-   /// b) Méthode retournant un objet de type "ChaletDbContext"
+    /// b) Méthode retournant un objet de type "ChaletDbContext"
     @Bean
     public ChaletDbContext chaletDbContext(JdbcTemplate jdbcTemplate) {
         return new ChaletDbContext(jdbcTemplate);

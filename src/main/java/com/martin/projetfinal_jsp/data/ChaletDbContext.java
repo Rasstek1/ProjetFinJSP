@@ -23,6 +23,7 @@ import java.util.Map;
             this.jdbcTemplate = jdbcTemplate;
         }
 
+
         // c) Méthode pour insérer un chalet
         public int insertChalet(Chalet chalet) {
             String sql = "INSERT INTO Chalets (NombreChambres, Description, Prix) VALUES (?, ?, ?)";
@@ -58,10 +59,11 @@ import java.util.Map;
 
 
         // d) Méthode pour insérer une photo
-        public void insertPhoto(int numChalet, String fileName, boolean isMain) {
-            String sql = "INSERT INTO Photos (NumChalet, Photo, IsMain) VALUES (?, ?, ?)";
-            jdbcTemplate.update(sql, numChalet, fileName, isMain ? 1 : 0);
+        public void insertPhoto(int numChalet, String fileName) {
+            String sql = "INSERT INTO Photos (NumChalet, Photo) VALUES (?, ?)";
+            jdbcTemplate.update(sql, numChalet, fileName);
         }
+
 
 
         // e) Méthode pour sélectionner tous les chalets

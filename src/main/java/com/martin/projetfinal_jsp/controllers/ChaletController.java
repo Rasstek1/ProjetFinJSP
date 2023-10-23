@@ -1,4 +1,7 @@
 package com.martin.projetfinal_jsp.controllers;
+import com.martin.projetfinal_jsp.models.Chalet;
+
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.martin.projetfinal_jsp.data.ChaletDbContext;
 import com.martin.projetfinal_jsp.models.Reservation;
@@ -8,18 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import java.util.List;
-
-import java.util.Map;
 
 @Controller
 public class ChaletController {
 
     @Autowired
     private ChaletDbContext chaletDbContext;
-
-
 
     // 1) Accueil
     @GetMapping("/accueil")
@@ -52,14 +49,21 @@ public class ChaletController {
         return "Confirmation";
     }
 
+    @GetMapping("/photo")
+    public String showPhotoDetails(@RequestParam("numChalet") int numChalet, Model model) {
+        // Récupérez les détails du chalet en utilisant numChalet
+        Chalet chalet = chaletDbContext.selectChaletByNumero(numChalet);
 
+        if(chalet == null) {
+            // Handle the error, e.g., redirect to an error page or set an error message
+            return "error";  // Change to the appropriate view name for your error page
+        }
 
+        // Ajoutez les détails du chalet au modèle
+        model.addAttribute("chalet", chalet);
 
-
-    @RequestMapping("/chalets")
-    public String afficherTousLesChalets(Model model) {
-        List<Map<String, Object>> listeChalets = chaletDbContext.selectAllChalets();
-        model.addAttribute("listeChalets", listeChalets);
-        return "listeChalets";  // remplacez par le nom de votre fichier JSP
+        // Retournez le nom de la vue JSP
+        return "photo";
     }
+
 }

@@ -10,13 +10,19 @@ public class Chalet {
     private BigDecimal prix;
     private List<String> listePhotos;
 
+    private String photoPrincipale;
 
-    public Chalet(int numChalet, int nombreChambres, String description, BigDecimal prix, List<String> listePhotos) {
+    // Constructeurs
+    public Chalet() {
+    }
+
+    public Chalet(int numChalet, int nombreChambres, String description, BigDecimal prix, List<String> listePhotos, String photoPrincipale) {
         this.numChalet = numChalet;
         this.nombreChambres = nombreChambres;
         this.description = description;
         this.prix = prix;
         this.listePhotos = listePhotos;
+        this.photoPrincipale = photoPrincipale;
     }
 
     // Getters et Setters
@@ -60,9 +66,16 @@ public class Chalet {
         this.listePhotos = listePhotos;
     }
 
-    // Constructeurs
-    public Chalet() {
+    public String getPhotoPrincipale() {
+        return photoPrincipale;
     }
+
+    public void setPhotoPrincipale(String photoPrincipale) {
+        this.photoPrincipale = photoPrincipale;
+    }
+
+
+
 
 
 }

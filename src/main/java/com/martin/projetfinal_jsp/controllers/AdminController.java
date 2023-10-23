@@ -54,7 +54,6 @@ public class AdminController {
         Files.write(path, bytes);
     }
 
-
     @PostMapping("/ajouterChalet")
     public String ajouterChalet(@ModelAttribute Chalet chalet,
                                 @RequestParam("mainPhoto") MultipartFile mainPhoto,
@@ -68,11 +67,13 @@ public class AdminController {
         // Sauvegarder la photo principale et insérer le nom du fichier dans la table photos
         if (!mainPhoto.isEmpty()) {
             String originalFilename = mainPhoto.getOriginalFilename();
-            String fileName = "chalet" + numChalet + "Main." + getFileExtension(originalFilename);
+            // Modification ici: changement du nommage de la photo principale
+            String fileName = "chalet" + numChalet + "_1" + getFileExtension(originalFilename);
+            chalet.setPhotoPrincipale(fileName);
 
             try {
                 saveFile(fileName, mainPhoto);
-                chaletDbContext.insertPhoto(numChalet, fileName, true); // true indique que c'est la photo principale
+                chaletDbContext.insertPhoto(numChalet, fileName); // Pas besoin de 'true' ou 'false' ici
             } catch (IOException e) {
                 e.printStackTrace();
                 model.addAttribute("errorMessage", "Une erreur s'est produite lors de la sauvegarde de la photo principale.");
@@ -80,7 +81,7 @@ public class AdminController {
             }
         }
 
-        int counter = 1;
+        int counter = 2; // Modification ici: débuter le compteur à 2 car _1 est déjà utilisé pour la photo principale
         for(MultipartFile photo : photos) {
             if (!photo.isEmpty()) {
                 String originalFilename = photo.getOriginalFilename();
@@ -88,7 +89,7 @@ public class AdminController {
 
                 try {
                     saveFile(fileName, photo);
-                    chaletDbContext.insertPhoto(numChalet, fileName, false); // false car ce n'est pas la photo principale
+                    chaletDbContext.insertPhoto(numChalet, fileName); // Pas besoin de 'true' ou 'false' ici
                 } catch (IOException e) {
                     e.printStackTrace();
                     model.addAttribute("errorMessage", "Une erreur s'est produite lors de la sauvegarde des photos.");
@@ -100,6 +101,7 @@ public class AdminController {
 
         return "redirect:/listeChalets";
     }
+
 
 
 
