@@ -1,13 +1,15 @@
 package com.martin.projetfinal_jsp.models;
+import java.math.BigDecimal;
 
 public class ChaletViewModel {
     private int numChalet;
     private int nombreChambres;
     private String description;
-    private double prix;
+    private BigDecimal prix;
+
     private String photo;
 
-    public ChaletViewModel(int numChalet, int nombreChambres, String description, double prix, String photo) {
+    public ChaletViewModel(int numChalet, int nombreChambres, String description, BigDecimal prix, String photo) {
         this.numChalet = numChalet;
         this.nombreChambres = nombreChambres;
         this.description = description;
@@ -40,11 +42,11 @@ public class ChaletViewModel {
         this.description = description;
     }
 
-    public double getPrix() {
+    public BigDecimal getPrix() {
         return prix;
     }
 
-    public void setPrix(double prix) {
+    public void setPrix(BigDecimal prix) {
         this.prix = prix;
     }
 

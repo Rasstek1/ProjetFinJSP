@@ -24,8 +24,10 @@
             <p class="mb-4">Remplissez les champs ci-dessous pour ajouter un nouveau chalet.</p>
 
             <!-- Le formulaire pour ajouter un chalet -->
-            <form action="/admin/ajouterChalet" method="post" enctype="multipart/form-data">
-                <div class="mb-3">
+            <form action="ajouterChalet" method="post" enctype="multipart/form-data">
+
+
+            <div class="mb-3">
                     <label for="nombreChambres" class="form-label">Nombre de chambres :</label>
                     <input type="number" id="nombreChambres" name="nombreChambres" class="form-control"
                            value="${chalet.nombreChambres}"/>
@@ -42,10 +44,12 @@
                     <label for="mainPhotoInput" class="form-label">Télécharger la photo principale :</label>
                     <input type="file" name="mainPhoto" id="mainPhotoInput" class="form-control"/>
                 </div>
+
                 <div class="mb-3">
-                    <label for="photosInput" class="form-label">Télécharger des photos supplémentaires :</label>
-                    <input type="file" name="photos" id="photosInput" multiple class="form-control"/>
+                    <label for="photosInput" class="form-label">Télécharger d'autres photos :</label>
+                    <input type="file" name="photos" id="photosInput" class="form-control" multiple/>
                 </div>
+
 
                 <div class="d-flex justify-content-center mt-3">
                     <input type="submit" value="Ajouter le chalet" class="btn btn-primary"/>

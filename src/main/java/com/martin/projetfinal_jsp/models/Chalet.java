@@ -1,16 +1,17 @@
 package com.martin.projetfinal_jsp.models;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Chalet {
     private int numChalet;
     private int nombreChambres;
     private String description;
-    private double prix;
+    private BigDecimal prix;
     private List<String> listePhotos;
 
 
-    public Chalet(int numChalet, int nombreChambres, String description, double prix, List<String> listePhotos) {
+    public Chalet(int numChalet, int nombreChambres, String description, BigDecimal prix, List<String> listePhotos) {
         this.numChalet = numChalet;
         this.nombreChambres = nombreChambres;
         this.description = description;
@@ -43,11 +44,11 @@ public class Chalet {
         this.description = description;
     }
 
-    public double getPrix() {
+    public BigDecimal getPrix() {
         return prix;
     }
 
-    public void setPrix(double prix) {
+    public void setPrix(BigDecimal prix) {
         this.prix = prix;
     }
 
