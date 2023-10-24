@@ -40,10 +40,6 @@
                     <label for="prix" class="form-label">Prix :</label>
                     <input type="text" id="prix" name="prix" class="form-control" value="${chalet.prix}"/>
                 </div>
-                <div class="mb-3">
-                    <label for="mainPhotoInput" class="form-label">Télécharger la photo principale :</label>
-                    <input type="file" name="mainPhoto" id="mainPhotoInput" class="form-control"/>
-                </div>
 
                 <div class="mb-3">
                     <label for="photosInput" class="form-label">Télécharger d'autres photos :</label>

@@ -3,7 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-
 <%@ include file="header.jsp" %>
 
 <!-- Importation du CSS de Bootstrap -->
@@ -21,36 +20,50 @@
 
         <!-- Boucle pour itérer sur chaque chalet et afficher ses détails -->
         <c:forEach var="chalet" items="${chalets}">
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow">
-                <img src="uploads/chalet${chalet.numChalet}_1.jpg" alt="Photo principale du chalet ${chalet.numChalet}">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow">
+
+                    <c:choose>
+                        <c:when test="${not empty chalet.listePhotos and chalet.listePhotos.size() > 0}">
+                            <img src="uploads/${chalet.listePhotos[0]}" alt="Photo du chalet ${chalet.numChalet}">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="uploads/defaut.png" alt="Photo par défaut">
+                        </c:otherwise>
+                    </c:choose>
 
 
-                <div class="card-body">
-                    <h5 class="card-title">${chalet.nom}</h5>
-                    <p class="card-text">${chalet.description}</p>
-                    <p class="card-text"><small class="text-muted">à partir de <fmt:formatNumber value="${chalet.prix}"
-                                                                                                 type="currency"
-                                                                                                 currencySymbol="$"
-                                                                                                 minFractionDigits="2"
-                                                                                                 maxFractionDigits="2"/></small>
-                    </p>
-                    <p class="card-text">
-                        <img src="${pageContext.request.contextPath}/img/chalet_pers.png"
-                             alt="Icone Personne"> ${chalet.capacite} pers. |
-                        <img src="${pageContext.request.contextPath}/img/card_bed.png"
-                             alt="Icone Chambre"> ${chalet.nombreChambres} chbre.
-                    </p>
-                    <!-- Bouton Détails -->
-                    <a href="${pageContext.request.contextPath}/photo?numChalet=${chalet.numChalet}" class="btn btn-primary mt-2">Détails</a>
+                    <div class="card-body">
 
+                        <p class="card-text">${chalet.description}</p>
+                        <p class="card-text"><small class="text-muted">à partir de <fmt:formatNumber value="${chalet.prix}"
+                                                                                                     type="currency"
+                                                                                                     currencySymbol="$"
+                                                                                                     minFractionDigits="2"
+                                                                                                     maxFractionDigits="2"/></small>
+                        </p>
+                        <p class="card-text">
+
+                            <img src="${pageContext.request.contextPath}/img/card_bed.png"
+                                 alt="Icone Chambre"> ${chalet.nombreChambres} chbre.
+                        </p>
+                        <!-- Bouton Détails -->
+                        <a href="${pageContext.request.contextPath}/photo?numChalet=${chalet.numChalet}"
+                           class="btn btn-primary mt-2">Détails</a>
+
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    </c:forEach>
-</div>
+
+        </c:forEach>
+
+
+    </div> <!-- Fin de la balise <div class="row"> -->
+
+</div> <!-- Fin de la balise <div class="container mt-5"> -->
+
 
 
 <!-- Inclusion du pied de page -->
 <%@ include file="footer.jsp" %>
+

@@ -1,6 +1,7 @@
 package com.martin.projetfinal_jsp.models;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Chalet {
@@ -8,21 +9,23 @@ public class Chalet {
     private int nombreChambres;
     private String description;
     private BigDecimal prix;
-    private List<String> listePhotos;
+    private List<String> listePhotos = new ArrayList<>();
 
-    private String photoPrincipale;
+
+
 
     // Constructeurs
     public Chalet() {
     }
 
-    public Chalet(int numChalet, int nombreChambres, String description, BigDecimal prix, List<String> listePhotos, String photoPrincipale) {
+    public Chalet(int numChalet, int nombreChambres, String description, BigDecimal prix, List<String> listePhotos) {
         this.numChalet = numChalet;
         this.nombreChambres = nombreChambres;
         this.description = description;
         this.prix = prix;
         this.listePhotos = listePhotos;
-        this.photoPrincipale = photoPrincipale;
+
+
     }
 
     // Getters et Setters
@@ -64,14 +67,6 @@ public class Chalet {
 
     public void setListePhotos(List<String> listePhotos) {
         this.listePhotos = listePhotos;
-    }
-
-    public String getPhotoPrincipale() {
-        return photoPrincipale;
-    }
-
-    public void setPhotoPrincipale(String photoPrincipale) {
-        this.photoPrincipale = photoPrincipale;
     }
 
 

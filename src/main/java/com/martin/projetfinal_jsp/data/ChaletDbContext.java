@@ -64,6 +64,10 @@ import java.util.Map;
             jdbcTemplate.update(sql, numChalet, fileName);
         }
 
+        public List<String> selectPhotosForChalet(int numChalet) {
+            String sql = "SELECT Photo FROM Photos WHERE NumChalet = ?";
+            return jdbcTemplate.queryForList(sql, new Object[]{numChalet}, String.class);
+        }
 
 
         // e) Méthode pour sélectionner tous les chalets
@@ -78,15 +82,22 @@ import java.util.Map;
         // f) Méthode pour sélectionner un chalet par son numéro
         public Chalet selectChaletByNumero(int numChalet) {
             String sql = "SELECT * FROM Chalets WHERE NumChalet = ?";
-            return jdbcTemplate.queryForObject(sql, new Object[]{numChalet}, (rs, rowNum) -> {
-                Chalet chalet = new Chalet();
-                chalet.setNumChalet(rs.getInt("NumChalet"));
-                chalet.setNombreChambres(rs.getInt("NombreChambres"));
-                chalet.setDescription(rs.getString("Description"));
-                chalet.setPrix(rs.getBigDecimal("Prix"));  // Modifié ici
-                return chalet;
+            Chalet chalet = jdbcTemplate.queryForObject(sql, new Object[]{numChalet}, (rs, rowNum) -> {
+                Chalet tempChalet = new Chalet();
+                tempChalet.setNumChalet(rs.getInt("NumChalet"));
+                tempChalet.setNombreChambres(rs.getInt("NombreChambres"));
+                tempChalet.setDescription(rs.getString("Description"));
+                tempChalet.setPrix(rs.getBigDecimal("Prix"));
+                return tempChalet;
             });
+
+            // Ajout des photos au chalet
+            List<String> photos = selectPhotosForChalet(numChalet);
+            chalet.setListePhotos(photos);
+
+            return chalet;
         }
+
 
 
         // g) Méthode pour insérer une réservation

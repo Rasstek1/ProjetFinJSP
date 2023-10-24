@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -35,61 +36,44 @@ public class AdminController {
     }
 
 
+    // Cette méthode récupère l'extension d'un fichier
     private String getFileExtension(String filename) {
         int dotIndex = filename.lastIndexOf('.');
-        if (dotIndex >= 0) {
-            return filename.substring(dotIndex);
-        }
-        return "";
+        return (dotIndex >= 0) ? filename.substring(dotIndex) : "";
     }
 
+    // Cette méthode sauvegarde un fichier dans le répertoire d'uploads
     private void saveFile(String filename, MultipartFile file) throws IOException {
         String uploadDirectory = "src/main/resources/static/uploads/";
-        File uploadDir = new File(uploadDirectory);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
+        Path uploadPath = Paths.get(uploadDirectory);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
         }
-        Path path = Paths.get(uploadDirectory, filename);
-        byte[] bytes = file.getBytes();
-        Files.write(path, bytes);
+        Path filePath = uploadPath.resolve(filename);
+        Files.write(filePath, file.getBytes());
     }
 
     @PostMapping("/ajouterChalet")
     public String ajouterChalet(@ModelAttribute Chalet chalet,
-                                @RequestParam("mainPhoto") MultipartFile mainPhoto,
                                 @RequestParam("photos") MultipartFile[] photos, Model model) throws IOException {
         System.out.println("Méthode ajouterChalet appelée.");
 
-        String description = HtmlUtils.htmlEscape(chalet.getDescription());
+        // Initialisation de la liste de photos pour le chalet
+        chalet.setListePhotos(new ArrayList<>());
 
+        chalet.setDescription(HtmlUtils.htmlEscape(chalet.getDescription()));
         int numChalet = chaletDbContext.insertChalet(chalet);
 
-        // Sauvegarder la photo principale et insérer le nom du fichier dans la table photos
-        if (!mainPhoto.isEmpty()) {
-            String originalFilename = mainPhoto.getOriginalFilename();
-            // Modification ici: changement du nommage de la photo principale
-            String fileName = "chalet" + numChalet + "_1" + getFileExtension(originalFilename);
-            chalet.setPhotoPrincipale(fileName);
-
-            try {
-                saveFile(fileName, mainPhoto);
-                chaletDbContext.insertPhoto(numChalet, fileName); // Pas besoin de 'true' ou 'false' ici
-            } catch (IOException e) {
-                e.printStackTrace();
-                model.addAttribute("errorMessage", "Une erreur s'est produite lors de la sauvegarde de la photo principale.");
-                return "ajouterChalet";
-            }
-        }
-
-        int counter = 2; // Modification ici: débuter le compteur à 2 car _1 est déjà utilisé pour la photo principale
-        for(MultipartFile photo : photos) {
+        int counter = 1; // Utilisé pour nommer les photos
+        for (MultipartFile photo : photos) {
             if (!photo.isEmpty()) {
                 String originalFilename = photo.getOriginalFilename();
                 String fileName = "chalet" + numChalet + "_" + counter + getFileExtension(originalFilename);
 
                 try {
                     saveFile(fileName, photo);
-                    chaletDbContext.insertPhoto(numChalet, fileName); // Pas besoin de 'true' ou 'false' ici
+                    chaletDbContext.insertPhoto(numChalet, fileName);
+                    chalet.getListePhotos().add(fileName);  // Ajoutez le nom de fichier à la liste de photos du chalet
                 } catch (IOException e) {
                     e.printStackTrace();
                     model.addAttribute("errorMessage", "Une erreur s'est produite lors de la sauvegarde des photos.");

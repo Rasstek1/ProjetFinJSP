@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 public class ChaletController {
 
@@ -27,9 +33,29 @@ public class ChaletController {
     // 2) Liste des chalets
     @GetMapping("/listeChalets")
     public String listeChalets(Model model) {
-        model.addAttribute("chalets", chaletDbContext.selectAllChalets());
+        List<Map<String, Object>> chaletsMapList = chaletDbContext.selectAllChalets();
+        List<Chalet> chalets = new ArrayList<>();
+
+        for (Map<String, Object> map : chaletsMapList) {
+            Chalet chalet = new Chalet();
+            chalet.setNumChalet((int) map.get("numChalet"));
+            chalet.setNombreChambres((int) map.get("nombreChambres"));
+            chalet.setDescription((String) map.get("description"));
+            chalet.setPrix((BigDecimal) map.get("prix"));
+
+            // Récupérez les photos pour ce chalet
+            List<String> photos = chaletDbContext.selectPhotosForChalet(chalet.getNumChalet());
+            chalet.setListePhotos(photos);
+
+            // Ajoutez le chalet à la liste :
+            chalets.add(chalet);
+        }
+
+        model.addAttribute("chalets", chalets);
         return "listeChalets";
     }
+
+
 
     // 3) Réserver un chalet
     @GetMapping("/reserverChalet/{numChalet}")
@@ -53,6 +79,8 @@ public class ChaletController {
     public String showPhotoDetails(@RequestParam("numChalet") int numChalet, Model model) {
         // Récupérez les détails du chalet en utilisant numChalet
         Chalet chalet = chaletDbContext.selectChaletByNumero(numChalet);
+        System.out.println("Chalet: " + chalet);
+        System.out.println("Photos: " + chalet.getListePhotos());
 
         if(chalet == null) {
             // Handle the error, e.g., redirect to an error page or set an error message
@@ -62,7 +90,8 @@ public class ChaletController {
         // Ajoutez les détails du chalet et la liste des photos au modèle
         model.addAttribute("chalet", chalet);
         model.addAttribute("photos", chalet.getListePhotos());
-
+        model.addAttribute("test", "Ceci est un test");
+        System.out.println("Type de la liste des photos : " + chalet.getListePhotos().getClass().getName());
         // Retournez le nom de la vue JSP
         return "photo";
     }
