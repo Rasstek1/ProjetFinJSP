@@ -57,11 +57,19 @@
             </c:forEach>
         </div>
     </div>
-    <!-- Description du chalet -->
-    <h1 class="mt-5">Description</h1>
-    <p>${chalet.description}</p>
-</div>
 
+<!-- Description du chalet -->
+<h1 class="mt-5">Description</h1>
+<p>${chalet.description}</p>
+
+<!-- Boutons centraux -->
+    <div class="d-flex justify-content-center">
+        <a href="${pageContext.request.contextPath}/listeChalets" class="btn btn-primary mr-2">Retour</a>
+        <a href="${pageContext.request.contextPath}/reserverChalet/${chalet.numChalet}" class="btn btn-success">Réserver</a>
+    </div>
+
+
+</div>
 
 <!-- Scripts JS de Bootstrap -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

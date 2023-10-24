@@ -1,6 +1,7 @@
 package com.martin.projetfinal_jsp.controllers;
 import com.martin.projetfinal_jsp.models.Chalet;
 
+import com.martin.projetfinal_jsp.models.EmailService;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.martin.projetfinal_jsp.data.ChaletDbContext;
@@ -23,6 +24,10 @@ public class ChaletController {
 
     @Autowired
     private ChaletDbContext chaletDbContext;
+
+
+    @Autowired
+    private EmailService emailService;
 
     // 1) Accueil
     @GetMapping("/accueil")
@@ -79,10 +84,26 @@ public class ChaletController {
         int numReservation = chaletDbContext.insertReservation(reservation);
         model.addAttribute("numReservation", numReservation);
 
-        // Ici, ajoutez le code pour envoyer le courriel de confirmation
+        // Créez une instance d'EmailService (vous pouvez l'injecter si elle est gérée par Spring)
+        EmailService emailService = new EmailService();
+
+        // Configurez l'e-mail de confirmation
+        String destinataire = "adresse@example.com"; // Remplacez par l'adresse de l'utilisateur
+        String sujet = "Confirmation de réservation";
+        String contenu = "Votre réservation a été confirmée. Numéro de réservation : " + numReservation;
+
+        try {
+            // Envoyez l'e-mail de confirmation
+            emailService.sendEmail(destinataire, sujet, contenu);
+            model.addAttribute("emailSent", true);
+        } catch (Exception e) {
+            model.addAttribute("emailSent", false);
+            e.printStackTrace();
+        }
 
         return "Confirmation";
     }
+
 
     @GetMapping("/photo")
     public String showPhotoDetails(@RequestParam("numChalet") int numChalet, Model model) {

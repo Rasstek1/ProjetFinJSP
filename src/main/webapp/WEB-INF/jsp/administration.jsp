@@ -27,11 +27,12 @@
             <form action="ajouterChalet" method="post" enctype="multipart/form-data">
 
 
-            <div class="mb-3">
+                <div class="mb-3">
                     <label for="nombreChambres" class="form-label">Nombre de chambres :</label>
                     <input type="number" id="nombreChambres" name="nombreChambres" class="form-control"
-                           value="${chalet.nombreChambres}"/>
+                           value="${chalet.nombreChambres}" min="1" />
                 </div>
+
                 <div class="mb-3">
                     <label for="description" class="form-label">Description :</label>
                     <textarea id="description" name="description" class="form-control">${chalet.description}</textarea>
