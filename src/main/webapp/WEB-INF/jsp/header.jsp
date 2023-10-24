@@ -16,17 +16,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-    <title>Chalet du Québec</title>
+    <title>Chalets du Québec</title>
 </head>
 <body>
 <!-- Bande bord en bord -->
 <div class="top-bar">
-    <div class="heures">
-        <p>Lundi au Mercredi: 10:00 à 18:00</p>
-        <p>Jeudi et Vendredi: 10:00 à 21:00</p>
-        <p>Samedi: 10:00 à 18:00</p>
-        <p>Dimanche: 10:00 à 17:00</p>
-    </div>
+
 </div>
 
 
@@ -37,7 +32,7 @@
         <!-- Logo et titre à gauche -->
         <a class="navbar-brand d-flex align-items-center" href="${pageContext.request.contextPath}/accueil">
             <img src="${pageContext.request.contextPath}/img/Logo.png" alt="Logo" class="logo-img"/>
-            <h2 class="brand-name ml-2" style="color:white;">Chalet du  <span style="color:#007dc7; font-weight: bold;">Québec</span></h2>
+            <h2 class="brand-name ml-2" style="color:black;">Chalet du  <span style="color:#007dc7; font-weight: bold;">Québec</span></h2>
         </a>
 
         <!-- Barre de navigation à droite -->

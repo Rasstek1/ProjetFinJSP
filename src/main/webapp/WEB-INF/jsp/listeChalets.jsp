@@ -22,7 +22,6 @@
         <c:forEach var="chalet" items="${chalets}">
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow">
-
                     <c:choose>
                         <c:when test="${not empty chalet.listePhotos and chalet.listePhotos.size() > 0}">
                             <img src="uploads/${chalet.listePhotos[0]}" alt="Photo du chalet ${chalet.numChalet}">
@@ -32,29 +31,29 @@
                         </c:otherwise>
                     </c:choose>
 
-
                     <div class="card-body">
-
                         <p class="card-text">${chalet.description}</p>
-                        <p class="card-text"><small class="text-muted">à partir de <fmt:formatNumber value="${chalet.prix}"
-                                                                                                     type="currency"
-                                                                                                     currencySymbol="$"
-                                                                                                     minFractionDigits="2"
-                                                                                                     maxFractionDigits="2"/></small>
+                    </div>
+
+                    <!-- Card Footer pour le prix, le nombre de chambres et le bouton Détails -->
+                    <div class="card-footer">
+                        <p class="card-text">
+                            <small class="text-muted">à partir de <fmt:formatNumber value="${chalet.prix}"
+                                                                                    type="currency"
+                                                                                    currencySymbol="$"
+                                                                                    minFractionDigits="2"
+                                                                                    maxFractionDigits="2"/></small>
                         </p>
                         <p class="card-text">
-
                             <img src="${pageContext.request.contextPath}/img/card_bed.png"
                                  alt="Icone Chambre"> ${chalet.nombreChambres} chbre.
                         </p>
                         <!-- Bouton Détails -->
                         <a href="${pageContext.request.contextPath}/photo?numChalet=${chalet.numChalet}"
                            class="btn btn-primary mt-2">Détails</a>
-
                     </div>
                 </div>
             </div>
-
         </c:forEach>
 
 

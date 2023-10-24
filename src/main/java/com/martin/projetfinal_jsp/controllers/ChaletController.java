@@ -35,12 +35,20 @@ public class ChaletController {
     public String listeChalets(Model model) {
         List<Map<String, Object>> chaletsMapList = chaletDbContext.selectAllChalets();
         List<Chalet> chalets = new ArrayList<>();
+        int maxLength = 100; // Limite de longueur pour la description
 
         for (Map<String, Object> map : chaletsMapList) {
             Chalet chalet = new Chalet();
             chalet.setNumChalet((int) map.get("numChalet"));
             chalet.setNombreChambres((int) map.get("nombreChambres"));
-            chalet.setDescription((String) map.get("description"));
+            String description = (String) map.get("description");
+
+            // Tronquer la description si elle dépasse la longueur maximale
+            if (description.length() > maxLength) {
+                description = description.substring(0, maxLength) + "...";
+            }
+
+            chalet.setDescription(description);
             chalet.setPrix((BigDecimal) map.get("prix"));
 
             // Récupérez les photos pour ce chalet
@@ -54,6 +62,7 @@ public class ChaletController {
         model.addAttribute("chalets", chalets);
         return "listeChalets";
     }
+
 
 
 

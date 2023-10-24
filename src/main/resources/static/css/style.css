@@ -138,7 +138,7 @@ header {
 }
 
 .header-bg {
-    background-color: #8ba676; /* Couleur de fond du header */
+    background-color: white; /* Couleur de fond du header */
     padding: 15px; /* Espacement interne du header */
 }
 
@@ -273,15 +273,15 @@ header h2 {
 }
 
 #monNavUnique li:nth-child(2) a {
-    border-left: 10px solid #ffd071;
+    border-left: 10px solid #3498db;
 }
 
 #monNavUnique li:nth-child(3) a {
-    border-left: 10px solid #f0776c;
+    border-left: 10px solid #3498db;
 }
 
 #monNavUnique li:last-child a {
-    border-left: 10px solid #1abc9c;
+    border-left: 10px solid #3498db;
 }
 
 #monNavUnique li a:after {
@@ -303,15 +303,15 @@ header h2 {
 }
 
 #monNavUnique li:nth-child(2) a:after {
-    background: #ffd071;
+    background: #3498db;
 }
 
 #monNavUnique li:nth-child(3) a:after {
-    background: #f0776c;
+    background: #3498db;
 }
 
 #monNavUnique li:last-child a:after {
-    background: #1abc9c;
+    background: #3498db;
 }
 /* Pour la largeur d'écran <= 992px */
 @media (max-width: 992px) {
@@ -395,3 +395,34 @@ header h2 {
 .custom-images {
     margin-left:50px;
 }
+
+
+
+
+/*********************caroussel thumbnail***********************/
+
+.miniatures-container {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.miniatures-container .row .col {
+    display: inline-block;
+    max-width: 120px;
+    height: auto;
+}
+
+.btn-prev, .btn-next {
+    position: absolute;
+    top: calc(50% - 15px); /* centre verticalement */
+    transform: translateY(-50%);
+}
+
+.btn-prev {
+    left: 0;
+}
+
+.btn-next {
+    right: 0;
+}
+/****************************************************************/
