@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:set var="now" value="${java.util.Calendar.getInstance().time}"/>
 <!DOCTYPE html>
@@ -46,35 +47,36 @@
                         <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/listeChalets">Réservation</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajouterChalet">Administration</a>
-                        </li>
-                        <c:if test="${empty pageContext.request.userPrincipal}">
-                            <!-- Lien "Se connecter" et "S'enregistrer" pour les utilisateurs non connectés -->
+                        <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
                             <li class="nav-item">
-                                <c:url var="UrlLogin" value="/login"></c:url>
-                                <a class="nav-link" href="${UrlLogin}">Se connecter</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajouterChalet">Administration</a>
+                            </li>
+                        </c:if>
+                        <c:if test="${empty pageContext.request.userPrincipal}">
+                            <li class="nav-item">
+                                <a class="nav-link" href="${pageContext.request.contextPath}/connexion">Se connecter</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="${pageContext.request.contextPath}/inscription">S'enregistrer</a>
                             </li>
-
                         </c:if>
                         <c:if test="${not empty pageContext.request.userPrincipal}">
-                            <!-- Le lien "Changer le mot de passe" pour les utilisateurs connectés -->
+                            <li class="nav-item">
+                                <span class="nav-link">Bonjour, ${pageContext.request.userPrincipal.name} ! Vous êtes connecté.</span>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="${pageContext.request.contextPath}/changementMotDePasse">Changer le mot de passe</a>
                             </li>
-                            <!-- Lien "Se déconnecter" pour les utilisateurs connectés -->
                             <li class="nav-item">
-                                <c:url var="UrlLogout" value="/logout"></c:url>
-                                <a class="nav-link" href="${UrlLogout}">Se déconnecter</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/logout">Se déconnecter</a>
                             </li>
                         </c:if>
                     </ul>
                 </div>
             </div>
         </nav>
+
+
 
 
     </div>

@@ -13,7 +13,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-@Service  // Indique que la classe est un service Spring
+/*@Service  // Indique que la classe est un service Spring
 public class EmailService {
 
     private GreenMail greenMail;  // Instance de GreenMail pour le service de messagerie
@@ -48,4 +48,4 @@ public class EmailService {
         greenMail.stop();  // Arrête GreenMail
     }
 }
-
+*/

@@ -1,32 +1,47 @@
-<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@ include file="header.jsp" %>
 
+<head>
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
 <body>
 <div class="content">
-    <div class="row">
-        <!-- Formulaire à gauche -->
-        <div class="col-md-6 mx-auto"> <!-- Ajoutez la classe mx-auto ici -->
-            <div class="card shadow mb-4 form-container">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Ajout de Chalet</h6>
+    <div class="card shadow mb-4 form-container">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Connexion</h6>
+        </div>
+        <div class="card-body">
+            <!-- Afficher le message d'erreur ici -->
+            <c:if test="${param.error}">
+                <div class="alert alert-danger">
+                    Identifiants incorrects. Veuillez réessayer.
                 </div>
-                <div class="card-body">
-                    <h2>Bienvenue sur le site de chalets Quebec : <%=SecurityContextHolder.getContext().getAuthentication().getName()%></h2>
-                    <div class="text-center">
-                        <c:url var="UrlLogin" value="/login"></c:url>
-                        <a href="${UrlLogin}" class="btn btn-primary">Se connecter</a>
-                        <a href="${UrlLogout}" class="btn btn-secondary">Se déconnecter</a>
-                    </div>
+            </c:if>
+
+            <form action="${pageContext.request.contextPath}/connexion" method="post">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur :</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
                 </div>
-            </div>
+
+                <div class="form-group">
+                    <label for="password">Mot de Passe :</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+                <button type="submit" class="btn btn-primary">Se connecter</button>
+            </form>
         </div>
     </div>
 </div>
-
-<%@ include file="footer.jsp" %>
 </body>

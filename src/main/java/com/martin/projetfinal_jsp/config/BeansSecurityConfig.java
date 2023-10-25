@@ -31,9 +31,16 @@ public class BeansSecurityConfig {
                     authorize
                             .requestMatchers(new AntPathRequestMatcher("/home/admin")).hasRole("ADMIN")
                             .requestMatchers(new AntPathRequestMatcher("/home/usager")).hasRole("USER")
+                            .requestMatchers(new AntPathRequestMatcher("/accueil")).permitAll()
+
                             .anyRequest().permitAll();
                 })
-                .formLogin(form -> form.successForwardUrl("/chalets/accueil").permitAll())
+                .formLogin(form -> form
+                        .loginPage("/connexion") // Définir la page de connexion personnalisée
+                        .failureUrl("/connexion?error=true") // URL de redirection en cas d'échec de connexion
+                        .successForwardUrl("/accueil") // URL de redirection après une connexion réussie
+                        .permitAll()
+                )
 
                 // Activer la protection CSRF
                 .csrf(csrf -> {
@@ -42,6 +49,7 @@ public class BeansSecurityConfig {
 
         return http.build();
     }
+
 
 
     @Bean
@@ -58,3 +66,35 @@ public class BeansSecurityConfig {
     }
 
 }
+
+
+
+   /* @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests(authorize -> {
+                    authorize
+                            .requestMatchers(new AntPathRequestMatcher("/chalets/**")).hasRole("ADMIN")
+                            .requestMatchers(new AntPathRequestMatcher("/chalets/listeChalets")).hasRole("USER")
+                            .requestMatchers(new AntPathRequestMatcher("/chalets/changementMotDePasse")).hasRole("USER")
+                            .requestMatchers(new AntPathRequestMatcher("/chalets/logout")).hasRole("USER")
+                            .requestMatchers(new AntPathRequestMatcher("/chalets/accueil")).permitAll()
+                            .requestMatchers(new AntPathRequestMatcher("/chalets/connexion")).permitAll()
+                            .requestMatchers(new AntPathRequestMatcher("/chalets/inscription")).permitAll()
+
+
+                            .anyRequest().authenticated();
+                })
+                .formLogin(form -> form
+                        .loginPage("/chalets/connexion")
+                        .failureUrl("/chalets/connexion?error=true")
+                        .successForwardUrl("/chalets/accueil")
+                        .permitAll()
+                )
+                .logout(logout -> logout.logoutUrl("/chalets/logout").permitAll())
+                .csrf(csrf -> {
+                    csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                });
+
+        return http.build();
+    }*/
