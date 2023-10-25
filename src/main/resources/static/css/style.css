@@ -13,7 +13,7 @@
     justify-content: center; /* Centrez les éléments horizontalement */
     align-items: center; /* Centrez les éléments verticalement */
     height: 30px; /* Exemple de hauteur, à ajuster selon vos besoins */
-    background-color: #4c4c4c; /* Couleur d'exemple, à ajuster selon vos besoins */
+    background-color: dodgerblue; /* Couleur d'exemple, à ajuster selon vos besoins */
     font-size: 0.85em;
 }
 
@@ -80,7 +80,7 @@ body {
     background-color:paleturquoise;
 }
 #footer {
-    background-color: #4c4c4c;
+    background-color: dodgerblue;
     padding: 20px;
     font-size: 14px;
 
@@ -246,112 +246,6 @@ header h2 {
 /****************************************************************************************************
 
 
-/* Styles pour #monNavUnique */
-#monNavUnique ul {
-    list-style: none;
-    margin: 0px;
-    padding: 0px;
-}
-
-#monNavUnique li a {
-    color: #007dc7;
-    width: 100%;
-    padding: 20px;
-    border-left: 5px solid;
-    position: relative;
-    text-decoration: none;
-}
-
-
-#monNavUnique li a:hover {
-    border-bottom: 0px;
-    color: #fff;
-}
-
-#monNavUnique li:first-child a {
-    border-left: 10px solid #3498db;
-}
-
-#monNavUnique li:nth-child(2) a {
-    border-left: 10px solid #3498db;
-}
-
-#monNavUnique li:nth-child(3) a {
-    border-left: 10px solid #3498db;
-}
-
-#monNavUnique li:last-child a {
-    border-left: 10px solid #3498db;
-}
-
-#monNavUnique li a:after {
-    content: "";
-    height: 100%;
-    left: 0;
-    top: 0;
-    width: 0px;
-    position: absolute;
-    transition: all 0.3s ease 0s;
-}
-
-#monNavUnique li a:hover:after {
-    width: 100%;
-}
-
-#monNavUnique li:first-child a:after {
-    background: #3498db;
-}
-
-#monNavUnique li:nth-child(2) a:after {
-    background: #3498db;
-}
-
-#monNavUnique li:nth-child(3) a:after {
-    background: #3498db;
-}
-
-#monNavUnique li:last-child a:after {
-    background: #3498db;
-}
-/* Pour la largeur d'écran <= 992px */
-@media (max-width: 992px) {
-    #monNavUnique li a {
-        border-left: none !important; /* retirer la bordure à gauche */
-        padding: 5px 20px; /* réduction du padding vertical ici */
-    }
-
-    #monNavUnique ul {
-        display: block; /* pour que les liens soient l'un sous l'autre */
-    }
-}
-
-@font-face {
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 100;
-    src: local('Lato Hairline'), local('Lato-Hairline'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/boeCNmOCCh-EWFLSfVffDg.woff) format('woff');
-}
-
-@font-face {
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 300;
-    src: local('Lato Light'), local('Lato-Light'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/KT3KS9Aol4WfR6Vas8kNcg.woff) format('woff');
-}
-
-@font-face {
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Lato Regular'), local('Lato-Regular'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/9k-RPmcnxYEPm8CNFsH2gg.woff) format('woff');
-}
-
-@font-face {
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 700;
-    src: local('Lato Bold'), local('Lato-Bold'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/wkfQbvfT_02e2IWO3yYueQ.woff) format('woff');
-}
 
 
 /************************************Notification TOAST********************************************/

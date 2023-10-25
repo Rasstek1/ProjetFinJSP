@@ -26,7 +26,7 @@ public class EmailService {
     public void sendEmail(String to, String subject, String body) {
         Properties properties = new Properties();  // Propriétés pour la session de messagerie
         properties.put("mail.smtp.host", "localhost");  // Hôte SMTP
-        properties.put("mail.smtp.port", "3026");  // Port SMTP de GreenMail
+        properties.put("mail.smtp.port", "3060");  // Port SMTP de GreenMail
 
         Session session = Session.getInstance(properties);  // Crée une session de messagerie avec les propriétés
 

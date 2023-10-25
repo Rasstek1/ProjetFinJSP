@@ -19,7 +19,6 @@
     <div class="row">
 
         <!-- Boucle pour itérer sur chaque chalet et afficher ses détails -->
-        <!-- Boucle pour itérer sur chaque chalet et afficher ses détails -->
         <c:forEach var="chalet" items="${chalets}">
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow">

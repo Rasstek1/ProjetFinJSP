@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -35,6 +36,13 @@ public class AdminController {
         return "administration";
     }
 
+    //Methode pour la liste de chalet sur admininistration.jsp
+    @GetMapping("/administration")
+    public String listeChalets(Model model) {
+        List<Chalet> chalets = chaletDbContext.selectAllChaletsForAdmin();
+        model.addAttribute("chalets", chalets);
+        return "listeChalets";
+    }
 
     // Cette méthode récupère l'extension d'un fichier
     private String getFileExtension(String filename) {
@@ -88,7 +96,87 @@ public class AdminController {
 
 
 
+    @PostMapping("/modifierChalet")
+    public String modifierChalet(@ModelAttribute Chalet chalet,
+                                 @RequestParam("photos") MultipartFile[] photos, Model model) throws IOException {
+        // Vérifiez si l'utilisateur a les autorisations d'administration ici
+        // Assurez-vous que la classe ChaletDbContext a une méthode updateChalet(Chalet chalet) implémentée
+        chaletDbContext.updateChalet(chalet);
+
+        // Mettez à jour les photos du chalet
+        updatePhotos(chalet.getNumChalet(), photos, model);
+
+        return "redirect:/admin/listeChalets";
+    }
+
+    private void deleteFile(String fileName) {
+        String uploadDirectory = "src/main/resources/static/uploads/";
+        Path filePath = Paths.get(uploadDirectory + fileName);
+
+        try {
+            Files.delete(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Gérer les erreurs de suppression de fichier ici
+        }
+    }
 
 
+    private void updatePhotos(int numChalet, MultipartFile[] photos, Model model) throws IOException {
+        // Supprimez d'abord toutes les photos existantes pour ce chalet
+        for (String existingPhoto : chaletDbContext.getPhotos(numChalet)) {
+            chaletDbContext.supprimerPhoto(numChalet, existingPhoto);
+            deleteFile(existingPhoto); // Supprimez également le fichier physique de votre système de fichiers local
+        }
+
+        // Ensuite, insérez les nouvelles photos
+        int counter = 1; // Utilisé pour nommer les photos
+        for (MultipartFile photo : photos) {
+            if (!photo.isEmpty()) {
+                String originalFilename = photo.getOriginalFilename();
+                String fileName = "chalet" + numChalet + "_" + counter + getFileExtension(originalFilename);
+
+                try {
+                    saveFile(fileName, photo);
+                    chaletDbContext.insertPhoto(numChalet, fileName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    model.addAttribute("errorMessage", "Une erreur s'est produite lors de la sauvegarde des photos.");
+                }
+                counter++;
+            }
+        }
+    }
+
+
+    @PostMapping("/ajouterPhoto/{numChalet}")
+    public String ajouterPhoto(@PathVariable int numChalet, @RequestParam("photo") MultipartFile photo, Model model) {
+        // Traitez l'ajout de la photo ici
+        try {
+            String originalFilename = photo.getOriginalFilename();
+            String fileName = "chalet" + numChalet + "_" + getFileExtension(originalFilename);
+            saveFile(fileName, photo);
+            chaletDbContext.insertPhoto(numChalet, fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("errorMessage", "Une erreur s'est produite lors de l'ajout de la photo.");
+        }
+        return "redirect:/admin/modifierChalet/{numChalet}";
+    }
+
+    @PostMapping("/supprimerPhoto/{numChalet}/{fileName}")
+    public String supprimerPhoto(@PathVariable int numChalet, @PathVariable String fileName, Model model) {
+        // Traitez la suppression de la photo ici
+        try {
+            // Supprimez également le fichier physique de votre système de fichiers local ici
+            // Assurez-vous de gérer les exceptions appropriées
+            chaletDbContext.supprimerPhoto(numChalet, fileName);
+            deleteFile(fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("errorMessage", "Une erreur s'est produite lors de la suppression de la photo.");
+        }
+        return "redirect:/admin/modifierChalet/{numChalet}";
+    }
 
 }

@@ -37,8 +37,6 @@
 
         <!-- Barre de navigation à droite -->
         <nav class="navbar navbar-expand-lg">
-
-
             <div id="monNavUnique">
                 <div id="navbarNav">
                     <ul class="navbar-nav">
@@ -51,10 +49,34 @@
                         <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajouterChalet">Administration</a>
                         </li>
+                        <c:if test="${empty pageContext.request.userPrincipal}">
+                            <!-- Lien "Se connecter" et "S'enregistrer" pour les utilisateurs non connectés -->
+                            <li class="nav-item">
+                                <c:url var="UrlLogin" value="/login"></c:url>
+                                <a class="nav-link" href="${UrlLogin}">Se connecter</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="${pageContext.request.contextPath}/inscription">S'enregistrer</a>
+                            </li>
+
+                        </c:if>
+                        <c:if test="${not empty pageContext.request.userPrincipal}">
+                            <!-- Le lien "Changer le mot de passe" pour les utilisateurs connectés -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="${pageContext.request.contextPath}/changementMotDePasse">Changer le mot de passe</a>
+                            </li>
+                            <!-- Lien "Se déconnecter" pour les utilisateurs connectés -->
+                            <li class="nav-item">
+                                <c:url var="UrlLogout" value="/logout"></c:url>
+                                <a class="nav-link" href="${UrlLogout}">Se déconnecter</a>
+                            </li>
+                        </c:if>
                     </ul>
                 </div>
             </div>
         </nav>
+
+
     </div>
 </header>
 

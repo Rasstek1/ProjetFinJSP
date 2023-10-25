@@ -1,15 +1,22 @@
 package com.martin.projetfinal_jsp.models;
 
-/*import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;*/
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-public class Client /*implements UserDetails */{
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Client implements UserDetails {
     private String nom;
     private String prenom;
     private String adresse;
     private String telephone;
     private String courriel;
     private String motPasse;
+
+    private List<String> roles;
 
     // Getters et Setters
     public String getNom() {
@@ -61,10 +68,13 @@ public class Client /*implements UserDetails */{
     }
 
     // Implémentation des méthodes de UserDetails
-   /* @Override
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public String getPassword() {
@@ -94,5 +104,5 @@ public class Client /*implements UserDetails */{
     @Override
     public boolean isEnabled() {
         return true;
-    }*/
+    }
 }

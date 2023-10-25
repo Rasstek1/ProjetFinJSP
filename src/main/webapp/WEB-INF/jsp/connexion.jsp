@@ -19,7 +19,6 @@
                     <h2>Bienvenue sur le site de chalets Quebec : <%=SecurityContextHolder.getContext().getAuthentication().getName()%></h2>
                     <div class="text-center">
                         <c:url var="UrlLogin" value="/login"></c:url>
-                        <c:url var="UrlLogout" value="/logout"></c:url>
                         <a href="${UrlLogin}" class="btn btn-primary">Se connecter</a>
                         <a href="${UrlLogout}" class="btn btn-secondary">Se déconnecter</a>
                     </div>
