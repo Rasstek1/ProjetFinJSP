@@ -1,12 +1,11 @@
 package com.martin.projetfinal_jsp.models;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Client implements UserDetails {
     private String nom;
@@ -15,10 +14,49 @@ public class Client implements UserDetails {
     private String telephone;
     private String courriel;
     private String motPasse;
+    private final boolean status;
+    private List<GrantedAuthority> roles;
 
-    private List<String> roles;
 
-    // Getters et Setters
+
+
+
+    public Client(String nom, String prenom, String adresse, String telephone, String courriel, String motPasse, boolean status, List<GrantedAuthority> roles) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.adresse = adresse;
+        this.telephone = telephone;
+        this.courriel = courriel;
+        this.motPasse = motPasse;
+        this.status = status;
+        this.roles = roles;
+    }
+    public Client(String courriel, String motPasse, List<GrantedAuthority> roles) {
+        this.courriel = courriel;
+        this.motPasse = motPasse;
+        this.roles = roles;
+        this.status = true;
+    }
+
+    public Client(String courriel, String motPasse) {
+        this.courriel = courriel; // Utilisez le courriel comme username
+        this.motPasse = motPasse; // Assurez-vous que le mot de passe est correctement défini
+        this.status = true;
+        this.roles = new ArrayList<>(); // Une liste vide d'autorités par défaut
+    }
+    public Client(String courriel, String nom, String prenom, String adresse, String telephone, String motPasse, List<GrantedAuthority> authorities) {
+        this.courriel = courriel;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.adresse = adresse;
+        this.telephone = telephone;
+        this.motPasse = motPasse;
+        this.status = true; // Vous pouvez initialiser le statut par défaut ici
+        this.roles = authorities;
+    }
+
+
+
     public String getNom() {
         return nom;
     }
@@ -67,14 +105,10 @@ public class Client implements UserDetails {
         this.motPasse = motPasse;
     }
 
-    // Implémentation des méthodes de UserDetails
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                .collect(Collectors.toList());
+    public Collection<GrantedAuthority> getAuthorities() {
+        return this.roles;
     }
-
 
     @Override
     public String getPassword() {
@@ -103,6 +137,6 @@ public class Client implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return status;
     }
 }
