@@ -20,12 +20,15 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.martin.projetfinal_jsp.models.Client;
 import com.martin.projetfinal_jsp.models.MyAuthenticationProvider;
 import com.martin.projetfinal_jsp.models.MyUserManager;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.ArrayList;
@@ -43,16 +46,27 @@ public class LoginController {
     @Autowired
     SecurityContextRepository securityContextRepository;
 
-    @RequestMapping(value="/connexion", method = RequestMethod.GET)
-    public String login(@RequestParam(value="loginError", required=false, defaultValue="false") String loginError) {
-        if (loginError.equals("true")) {
-            return "connexion?loginError=true";
-        } else {
-            return "connexion";
+    @GetMapping("/connexion")
+    public String login(@RequestParam(value = "courriel", required = false) String courriel,
+                        @RequestParam(value = "motPasse", required = false) String motPasse,
+                        @RequestParam(value="loginError", required=false, defaultValue="false") String loginError,
+                        Model model) {
+        if (courriel != null && motPasse != null) {
+            // Si les informations de courriel et de mot de passe sont présentes, pré-remplissez-les dans le modèle
+            model.addAttribute("courriel", courriel);
+            model.addAttribute("motPasse", motPasse);
         }
+
+        if (loginError.equals("true")) {
+            // Si une erreur de connexion est détectée, ajoutez un attribut d'erreur dans le modèle
+            model.addAttribute("loginError", true);
+        }
+
+        return "connexion";
     }
 
-    @RequestMapping(value="/accueil", method = RequestMethod.POST)
+
+    @RequestMapping(value="/connexion", method = RequestMethod.POST)
     public String login(HttpServletRequest req, HttpServletResponse response) {
         SecurityContext securitycontext = SecurityContextHolder.createEmptyContext();
         try {
@@ -71,31 +85,43 @@ public class LoginController {
             // Lire l'URL d'origine pour une redirection après une authentification réussie
             SavedRequest savedRequest = new HttpSessionRequestCache().getRequest(req, response);
 
-            if (savedRequest == null) {
+            if (aut.isAuthenticated()) {
+                // Si l'authentification réussit, redirigez vers la page d'accueil
                 return "redirect:/accueil";
             } else {
-                return "redirect:" + savedRequest.getRedirectUrl();
+                // Sinon, redirigez vers la page de connexion avec un message d'erreur
+                return "redirect:/connexion?loginError=true";
             }
         } catch (AuthenticationException ex) {
+            // Gestion de l'exception en cas d'erreur d'authentification
             HttpSession session = req.getSession(true);
-            session.setAttribute("LoginErrorMessage", ex.getMessage());
+            session.setAttribute("LoginError", ex.getMessage());
+            // En cas d'échec de la connexion, restez sur la page de connexion avec un message d'erreur
             return "redirect:/connexion?loginError=true";
         } catch (Exception ex) {
+            // Gestion de l'exception générale
             HttpSession session = req.getSession(true);
-            session.setAttribute("LoginErrorMessage", ex.getMessage());
+            session.setAttribute("LoginError", ex.getMessage());
+            // En cas d'échec de la connexion, restez sur la page de connexion avec un message d'erreur
             return "redirect:/connexion?loginError=true";
         }
     }
 
-    @RequestMapping(value="/login/logout", method = RequestMethod.POST)
+    @GetMapping("/logoutPage")
+    public String logoutPage() {
+        return "logoutPage"; // Le nom de la vue correspondant à votre page de déconnexion
+    }
+
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
     public String logout (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             // Supprimer le jeton d'authentification
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/home/accueil";
+        return "redirect:/logoutPage";
     }
+
 
     @RequestMapping(value="/login/register", method = RequestMethod.GET)
     public String register(@RequestParam(value="registerError", required=false, defaultValue="false") String registerError) {
@@ -106,15 +132,15 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(value="/login/register", method = RequestMethod.POST)
-    public String register(HttpServletRequest req, HttpSession session) {
+    @RequestMapping(value="inscription", method = RequestMethod.POST)
+    public String register(HttpServletRequest req, HttpSession session, RedirectAttributes redirectAttributes) {
         try {
+            String courriel = req.getParameter("courriel");
+            String motPasse = req.getParameter("motPasse");
             String nom = req.getParameter("nom");
             String prenom = req.getParameter("prenom");
             String adresse = req.getParameter("adresse");
             String telephone = req.getParameter("telephone");
-            String courriel = req.getParameter("courriel");
-            String motPasse = req.getParameter("password"); // Assurez-vous que "password" correspond au nom du champ dans le formulaire
 
             // Attribuer le rôle ROLE_USER par défaut au nouveau client
             List<GrantedAuthority> authorities = new ArrayList<>();
@@ -125,11 +151,18 @@ public class LoginController {
 
             // Utilisez le gestionnaire d'utilisateurs pour créer le nouvel utilisateur
             this.usermanager.createUser(client);
-            return "redirect:/home/accueil";
+
+            // Ajoutez les informations de courriel et de mot de passe aux attributs de redirection
+            redirectAttributes.addAttribute("courriel", courriel);
+            redirectAttributes.addAttribute("motPasse", motPasse);
+
+            // Redirigez vers la page de connexion
+            return "redirect:/connexion";
         } catch (IncorrectResultSizeDataAccessException ex) {
             session.setAttribute("registerErrorMessage", ex.getMessage());
             return "redirect:/inscription?registerError=true";
         }
     }
+
 
 }

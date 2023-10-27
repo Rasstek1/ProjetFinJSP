@@ -32,7 +32,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
             throw new UsernameNotFoundException("Le client est inexistant");
         }
         // En utilisant la méthode matches de la classe BCryptPasswordEncoder
-        if (!this.userDetailsManager.getPasswordEncoder().matches(password, client.getMotPasse())) { // Utilisez getMotPasse au lieu de getPassword
+        if (!this.userDetailsManager.getPasswordEncoder().matches(password, client.getMotPasse())) {
             throw new BadCredentialsException("Le mot de passe est incorrect.");
         }
         // Récupérer les rôles du client

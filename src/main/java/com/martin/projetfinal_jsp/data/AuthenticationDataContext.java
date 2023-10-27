@@ -18,7 +18,7 @@ public class AuthenticationDataContext {
     private JdbcTemplate jdbcTemplate;
 
     // Définition des requêtes SQL
-    private final String insertUserQuery = "INSERT INTO Clients(Courriel, Nom, Prenom, Adresse, Telephone, Mot_Passe) VALUES(?, ?, ?, ?, ?, ?)";
+    private final String insertUserQuery = "INSERT INTO Clients(Courriel, Mot_Passe, Nom, Prenom, Adresse, Telephone) VALUES(?, ?, ?, ?, ?, ?)";
     private final String insertAuthQuery = "INSERT INTO Roles(Courriel, Role) VALUES(?, ?)";
     private final String selectPasswordQuery = "SELECT Mot_Passe FROM Clients WHERE Courriel=?";
     private final String selectAuthQuery = "SELECT role FROM Roles WHERE Courriel=?";

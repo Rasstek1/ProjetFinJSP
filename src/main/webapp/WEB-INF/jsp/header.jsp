@@ -33,7 +33,7 @@
         <!-- Logo et titre à gauche -->
         <a class="navbar-brand d-flex align-items-center" href="${pageContext.request.contextPath}/accueil">
             <img src="${pageContext.request.contextPath}/img/Logo.png" alt="Logo" class="logo-img"/>
-            <h2 class="brand-name ml-2" style="color:black;">Chalet du  <span style="color:#007dc7; font-weight: bold;">Québec</span></h2>
+            <h2 class="brand-name ml-2" style="color:black;">Les chalets du  <span style="color:#007dc7; font-weight: bold;">Québec</span></h2>
         </a>
 
         <!-- Barre de navigation à droite -->
@@ -44,9 +44,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/accueil">Accueil</a>
                         </li>
+                        <c:if test="${not empty pageContext.request.userPrincipal}">
                         <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/listeChalets">Réservation</a>
                         </li>
+                        </c:if>
                         <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
                             <li class="nav-item">
                                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajouterChalet">Administration</a>
@@ -57,12 +59,12 @@
                                 <a class="nav-link" href="${pageContext.request.contextPath}/connexion">Se connecter</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="${pageContext.request.contextPath}/inscription">S'enregistrer</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/login/register">S'enregistrer</a>
                             </li>
                         </c:if>
                         <c:if test="${not empty pageContext.request.userPrincipal}">
                             <li class="nav-item">
-                                <span class="nav-link">Bonjour, ${pageContext.request.userPrincipal.name} ! Vous êtes connecté.</span>
+                                <span class="nav-link" style="font-weight: 700; color: deepskyblue">Bonjour, ${pageContext.request.userPrincipal.name}!</span>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="${pageContext.request.contextPath}/changementMotDePasse">Changer le mot de passe</a>
@@ -70,6 +72,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="${pageContext.request.contextPath}/logout">Se déconnecter</a>
                             </li>
+
                         </c:if>
                     </ul>
                 </div>
@@ -85,6 +88,12 @@
 
 
 <!-- Bannière publicitaire -->
-<div class="banner" style="margin-bottom: 80px;">
+<!--<div class="banner" style="margin-bottom: 80px;">
 
+</div>-->
+<div class="video-section full-width">
+    <video width="100%" height="auto" autoplay loop muted>
+        <source src="${pageContext.request.contextPath}/video/chalet.mp4" type="video/mp4">
+        Votre navigateur ne prend pas en charge la vidéo.
+    </video>
 </div>

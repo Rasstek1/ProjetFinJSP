@@ -20,6 +20,13 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Inscription</h6>
         </div>
+
+        <c:if test="${param.registerError}">
+            <div class="alert alert-danger">
+                Identifiants incorrects. Veuillez réessayer.
+            </div>
+        </c:if>
+
         <div class="card-body">
             <form action="${pageContext.request.contextPath}/inscription" method="post">
                 <div class="form-group">
@@ -56,8 +63,11 @@
 
 
                 <button type="submit" class="btn btn-primary">S'inscrire</button>
+
+
             </form>
         </div>
     </div>
 </div>
 </body>
+<%@ include file="footer.jsp" %>

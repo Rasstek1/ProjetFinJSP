@@ -74,13 +74,13 @@ public class ProjetFinalBeansConfiguration {
     }
 
     // Configuration du gestionnaire d'utilisateurs
-// Renommez la méthode annotée avec @Bean pour la distinguer du constructeur dans la classe MyUserManager
+
     @Bean(name = "userManagerBean")
     public MyUserManager userManagerBean(AuthenticationDataContext authenticationDataContext, PasswordEncoder passwordEncoder) {
         MyUserManager usermanager = new MyUserManager(authenticationDataContext, passwordEncoder);
 
         // Création de l'utilisateur admin s'il n'existe pas déjà
-        if (usermanager.userExists("admin")) {
+        if (usermanager.userExists("admin")) { //jai enlever le! car ca essayais de creer un user admin a chaque fois et causais une erreur de UserExists!
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@ include file="header.jsp" %>
 
@@ -20,7 +21,7 @@
         </div>
         <div class="card-body">
             <!-- Afficher le message d'erreur ici -->
-            <c:if test="${param.error}">
+            <c:if test="${param.loginError}">
                 <div class="alert alert-danger">
                     Identifiants incorrects. Veuillez réessayer.
                 </div>
@@ -29,12 +30,12 @@
             <form action="${pageContext.request.contextPath}/connexion" method="post">
                 <div class="form-group">
                     <label for="username">Nom d'utilisateur :</label>
-                    <input type="text" class="form-control" id="username" name="username" required>
+                    <input type="text" class="form-control" id="username" name="username" value="${courriel}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Mot de Passe :</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
+                    <input type="password" class="form-control" id="password" name="password" value="${motPasse}" required>
                 </div>
 
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -45,3 +46,4 @@
     </div>
 </div>
 </body>
+<%@ include file="footer.jsp" %>

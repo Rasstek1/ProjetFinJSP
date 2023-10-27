@@ -33,6 +33,27 @@
     }
 }
 
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+
+.video-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.video-section video {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
 
 
 .heures {
@@ -58,8 +79,8 @@ body {
 .content {
     margin-left:15%; /* Marge à gauche */
     margin-right:15%; /* Marge à droite */
-
-    padding-bottom: 200px;
+margin-top:30px;
+    padding-bottom: 100px;
 
 }
 .welcome{
