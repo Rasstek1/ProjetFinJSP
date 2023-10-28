@@ -4,14 +4,25 @@
 
 <%@ include file="header.jsp" %>
 
-<div class="container mt-5">
-    <h1>Confirmation de Réservation</h1>
+    <div class="content" id="content">
+        <div class="card shadow mb-4 form-container">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Confirmation</h6>
+            </div>
+            <div class="card-body">
 
-    <div class="alert alert-success" role="alert">
-        Votre réservation a été confirmée avec succès.
+
+                <div class="alert alert-success" role="alert">
+                    Votre réservation a été confirmée avec succès.
+                </div>
+
+
+                <div>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/accueil">Retour a l'accueil</a>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <p>Numéro de Réservation : ${numReservation}</p>
 
     <!-- Code de la notification toast -->
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">

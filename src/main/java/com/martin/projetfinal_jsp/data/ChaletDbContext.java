@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -177,10 +178,48 @@ import org.slf4j.LoggerFactory;
 
         // g) Méthode pour insérer une réservation
         public int insertReservation(Reservation reservation) {
+            // Calcul du montant total
+            BigDecimal prixDeBaseParJour = reservation.getPrix();
+
+            if (prixDeBaseParJour == null) {
+                // Gérer le cas où le prix de base par jour est null, par exemple, en définissant une valeur par défaut.
+                prixDeBaseParJour = BigDecimal.ZERO; // Vous pouvez définir une valeur par défaut appropriée.
+            }
+
+            int nombreDeJours = reservation.getDuree();
+            BigDecimal montantTotal = prixDeBaseParJour.multiply(new BigDecimal(nombreDeJours));
+
+            BigDecimal taxes = montantTotal.multiply(new BigDecimal("0.15")); // Assurez-vous de créer BigDecimal à partir de chaînes pour éviter les problèmes de précision.
+            montantTotal = montantTotal.add(taxes);
+
+            // Ajoutez le montant total calculé au champ "Prix" de l'objet Reservation
+            reservation.setPrix(montantTotal);
+
+            // Insérez la réservation dans la base de données
             String sql = "INSERT INTO Reservations (NumChalet, Telephone, NomClient, Courriel, Prix, Duree) VALUES (?, ?, ?, ?, ?, ?)";
-            jdbcTemplate.update(sql, reservation.getNumChalet(), reservation.getTelephone(), reservation.getNomClient(), reservation.getCourriel(), reservation.getPrix(), reservation.getDuree());
-            return jdbcTemplate.queryForObject("SELECT SCOPE_IDENTITY()", Integer.class);  // Retourne le numéro de la dernière réservation
+            jdbcTemplate.update(
+                    sql,
+                    reservation.getNumChalet(),
+                    reservation.getTelephone(),
+                    reservation.getNomClient(),
+                    reservation.getCourriel(),
+                    reservation.getPrix(),
+                    reservation.getDuree()
+            );
+
+            // Récupérez le numéro de réservation inséré
+            Integer numReservation = jdbcTemplate.queryForObject("SELECT SCOPE_IDENTITY()", Integer.class);
+
+            if (numReservation != null) {
+                return numReservation.intValue();
+            } else {
+                // Gérer le cas où aucune réservation n'a été insérée
+                return -1;
+            }
         }
+
+
+
 
 
     }

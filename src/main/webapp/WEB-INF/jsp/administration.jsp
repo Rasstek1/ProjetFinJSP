@@ -16,7 +16,7 @@
 </head>
 
 <body>
-<div class="content">
+<div class="content" id="content">
     <div class="row">
         <!-- Formulaire à gauche -->
         <div class="col-md-6">

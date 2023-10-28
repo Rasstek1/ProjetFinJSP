@@ -14,13 +14,13 @@
 </head>
 
 <body>
-<div class="content" id="content">
+<div class="content">
     <div class="card shadow mb-4 form-container">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Connexion</h6>
         </div>
         <div class="card-body">
-<p>Vous êtes déconnecté!</p>
+<p>Mot de passe changé avec succès!</p>
         </div>
     </div>
 </div>

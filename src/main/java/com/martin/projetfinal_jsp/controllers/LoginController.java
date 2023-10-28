@@ -15,22 +15,21 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import com.martin.projetfinal_jsp.models.Client;
 import com.martin.projetfinal_jsp.models.MyAuthenticationProvider;
 import com.martin.projetfinal_jsp.models.MyUserManager;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,11 +39,20 @@ public class LoginController {
     MyAuthenticationProvider myprovider;
 
     @Autowired
-    @Qualifier("userManagerBean") // Utilisez le nom correct de la méthode
+    @Qualifier("userManagerBean")
     private MyUserManager usermanager;
 
     @Autowired
     SecurityContextRepository securityContextRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public LoginController(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+
 
     @GetMapping("/connexion")
     public String login(@RequestParam(value = "courriel", required = false) String courriel,
@@ -163,6 +171,40 @@ public class LoginController {
             return "redirect:/inscription?registerError=true";
         }
     }
+
+/*************************Changement de mot de passe************************************/
+    // Affiche le formulaire de changement de mot de passe
+    @GetMapping("/motDePasse")
+    public String afficherFormulaireChangementMotPasse() {
+        return "motDePasse"; // le nom de la vue (jsp) pour le formulaire de changement de mot de passe
+    }
+
+    // Gère la soumission du formulaire de changement de mot de passe
+// Gère la soumission du formulaire de changement de mot de passe
+    @PostMapping("/changerMotDePasse")
+    public String changerMotDePasse(@RequestParam("ancienMotDePasse") String ancienMotDePasse,
+                                    @RequestParam("nouveauMotDePasse") String nouveauMotDePasse,
+                                    RedirectAttributes redirectAttributes) {
+        try {
+            usermanager.changePassword(ancienMotDePasse, nouveauMotDePasse);
+            // Redirigez l'utilisateur vers une page de succès si le changement de mot de passe réussit.
+            return "redirect:/motDePasseSuccess";
+        } catch (Exception e) {
+            e.printStackTrace(); // Ajoutez cette ligne pour afficher les détails de l'exception dans la console.
+            // En cas d'erreur, ajoutez un attribut d'erreur et redirigez l'utilisateur vers la même page "motDePasse".
+            redirectAttributes.addAttribute("MPError", true);
+            return "redirect:/motDePasse";
+        }
+    }
+
+
+
+    // Page de succès pour le changement de mot de passe
+    @GetMapping("/motDePasseSuccess")
+    public String motDePasseSuccess() {
+        return "motDePasseSuccess"; // Nom de la vue (jsp) pour la page de succès
+    }
+/*******************************************************************************************/
 
 
 }

@@ -17,6 +17,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <script src="${pageContext.request.contextPath}/js/script.js"></script>
+
     <title>Chalets du Québec</title>
 </head>
 <body>
@@ -67,7 +69,7 @@
                                 <span class="nav-link" style="font-weight: 700; color: deepskyblue">Bonjour, ${pageContext.request.userPrincipal.name}!</span>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="${pageContext.request.contextPath}/changementMotDePasse">Changer le mot de passe</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/motDePasse">Changer le mot de passe</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="${pageContext.request.contextPath}/logout">Se déconnecter</a>

@@ -8,68 +8,93 @@
 <!-- Importation du CSS de Bootstrap -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-<div class="container mt-5">
+<head>
+    <style>
+        .form-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
 
-    <!-- Carrousel Bootstrap -->
-    <div id="chaletCarousel" class="carousel slide" data-ride="carousel">
-        <!-- Indicateurs (miniatures) -->
-        <ol class="carousel-indicators">
-            <c:forEach var="photo" items="${photos}" varStatus="status">
-                <li data-target="#chaletCarousel" data-slide-to="${status.index}" class="<c:if test="${status.index == 0}">active</c:if>"></li>
-            </c:forEach>
-        </ol>
-
-        <div class="carousel-inner">
-            <c:choose>
-                <c:when test="${fn:length(photos) > 0}">
-                    <c:forEach var="photo" items="${photos}" varStatus="status">
-                        <div class="carousel-item <c:if test="${status.index == 0}">active</c:if>">
-                            <img src="<c:url value='/uploads/${photo}'/>" alt="Photo du chalet ${chalet.numChalet}" class="d-block w-100">
-                        </div>
-                    </c:forEach>
-                </c:when>
-                <c:otherwise>
-                    <p>Aucune photo disponible pour ce chalet.</p>
-                </c:otherwise>
-            </c:choose>
+<body>
+<div class="content" id="content">
+    <div class="card shadow mb-4 form-container">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Images</h6>
         </div>
+        <div class="card-body">
+            <div class="container mt-5">
 
-        <!-- Contrôles du carrousel (flèches) -->
-        <a class="carousel-control-prev" href="#chaletCarousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Précédent</span>
-        </a>
-        <a class="carousel-control-next" href="#chaletCarousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Suivant</span>
-        </a>
-    </div>
+                <!-- Carrousel Bootstrap -->
+                <div id="chaletCarousel" class="carousel slide" data-ride="carousel">
+                    <!-- Indicateurs (miniatures) -->
+                    <ol class="carousel-indicators">
+                        <c:forEach var="photo" items="${photos}" varStatus="status">
+                            <li data-target="#chaletCarousel" data-slide-to="${status.index}"
+                                class="<c:if test="${status.index == 0}">active</c:if>"></li>
+                        </c:forEach>
+                    </ol>
 
-    <!-- Conteneur des miniatures -->
-    <div class="miniatures-container mt-3">
-        <div class="row no-gutters">
-            <c:forEach var="photo" items="${photos}" varStatus="status">
-                <div class="col">
-                    <a href="#" data-target="#chaletCarousel" data-slide-to="${status.index}">
-                        <img src="<c:url value='/uploads/${photo}'/>" alt="Miniature du chalet ${chalet.numChalet}" class="img-fluid">
+                    <div class="carousel-inner">
+                        <c:choose>
+                            <c:when test="${fn:length(photos) > 0}">
+                                <c:forEach var="photo" items="${photos}" varStatus="status">
+                                    <div class="carousel-item <c:if test="${status.index == 0}">active</c:if>">
+                                        <img src="<c:url value='/uploads/${photo}'/>"
+                                             alt="Photo du chalet ${chalet.numChalet}" class="d-block w-100">
+                                    </div>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <p>Aucune photo disponible pour ce chalet.</p>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+
+                    <!-- Contrôles du carrousel (flèches) -->
+                    <a class="carousel-control-prev" href="#chaletCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Précédent</span>
+                    </a>
+                    <a class="carousel-control-next" href="#chaletCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Suivant</span>
                     </a>
                 </div>
-            </c:forEach>
+
+                <!-- Conteneur des miniatures -->
+                <div class="miniatures-container mt-3">
+                    <div class="row no-gutters">
+                        <c:forEach var="photo" items="${photos}" varStatus="status">
+                            <div class="col">
+                                <a href="#" data-target="#chaletCarousel" data-slide-to="${status.index}">
+                                    <img src="<c:url value='/uploads/${photo}'/>"
+                                         alt="Miniature du chalet ${chalet.numChalet}" class="img-fluid">
+                                </a>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+
+                <!-- Description du chalet -->
+                <h1 class="mt-5">Description</h1>
+                <p>${chalet.description}</p>
+
+                <!-- Boutons centraux -->
+                <div class="d-flex justify-content-center">
+                    <a href="${pageContext.request.contextPath}/listeChalets" class="btn btn-primary mr-2">Retour</a>
+                    <a href="${pageContext.request.contextPath}/reserverChalet/${chalet.numChalet}"
+                       class="btn btn-success">Réserver</a>
+                </div>
+
+
+            </div>
         </div>
     </div>
-
-<!-- Description du chalet -->
-<h1 class="mt-5">Description</h1>
-<p>${chalet.description}</p>
-
-<!-- Boutons centraux -->
-    <div class="d-flex justify-content-center">
-        <a href="${pageContext.request.contextPath}/listeChalets" class="btn btn-primary mr-2">Retour</a>
-        <a href="${pageContext.request.contextPath}/reserverChalet/${chalet.numChalet}" class="btn btn-success">Réserver</a>
-    </div>
-
-
 </div>
+
+
 
 <!-- Scripts JS de Bootstrap -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

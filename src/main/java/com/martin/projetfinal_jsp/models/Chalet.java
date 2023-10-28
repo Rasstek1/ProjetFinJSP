@@ -22,7 +22,7 @@ public class Chalet {
         this.numChalet = numChalet;
         this.nombreChambres = nombreChambres;
         this.description = description;
-        this.prix = prix;
+        this.prix = (prix != null) ? prix : BigDecimal.ZERO;
         this.listePhotos = listePhotos;
 
 
@@ -68,6 +68,8 @@ public class Chalet {
     public void setListePhotos(List<String> listePhotos) {
         this.listePhotos = listePhotos;
     }
+
+
 
 
 

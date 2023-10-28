@@ -2,6 +2,7 @@ package com.martin.projetfinal_jsp.data;
 
 
 import com.martin.projetfinal_jsp.models.Client;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.martin.projetfinal_jsp.models.Client;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -102,4 +104,22 @@ public class AuthenticationDataContext {
     public void changePassword(String courriel, String oldPassword, String newPassword) {
         this.jdbcTemplate.update(changePasswordQuery, newPassword, courriel, oldPassword);
     }
+
+    public void updateUserPassword(String username, String oldPassword, String newPassword) {
+        try {
+            jdbcTemplate.update(
+                    changePasswordQuery,
+                    newPassword,
+                    username,
+                    oldPassword
+            );
+        } catch (DataAccessException ex) {
+            // Gérer l'exception, par exemple, journaliser l'erreur ou lever une exception personnalisée.
+            ex.printStackTrace(); // À des fins de débogage
+        }
+    }
+
 }
+
+
+

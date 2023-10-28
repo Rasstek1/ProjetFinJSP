@@ -14,21 +14,30 @@
 </head>
 
 <body>
-<div class="content">
+<div class="content" id="content">
     <div class="card shadow mb-4 form-container">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Reservation</h6>
         </div>
         <div class="card-body">
-            <form action="${pageContext.request.contextPath}/confirmReserverChalet" method="post">
+            <form action="${pageContext.request.contextPath}/confirmation" method="post">
+                <input type="hidden" name="numChalet" value="${chalet.numChalet}" />
+                <input type="hidden" name="prix" value="${chalet.prix}" />
+
+
                 <div class="form-group">
-                    <label for="nomClient">Nom du Client :</label>
-                    <input type="text" class="form-control" id="nomClient" name="nomClient" required>
+                    <label for="nomClient">Prénom :</label>
+                    <input type="text" class="form-control" id="nomClient" name="nomClient" value="${nomClient}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telephone">Téléphone :</label>
+                    <input type="text" class="form-control" id="telephone" name="telephone" value="${telephone}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="courriel">Courriel :</label>
-                    <input type="email" class="form-control" id="courriel" name="courriel" required>
+                    <input type="email" class="form-control" id="courriel" name="courriel" value="${courriel}" required>
                 </div>
 
                 <div class="form-group">
@@ -41,7 +50,8 @@
                     <input type="number" class="form-control" id="duree" name="duree" required min="1">
                 </div>
 
-                <input type="hidden" name="numChalet" value="${chalet.numChalet}">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
 
                 <button type="submit" class="btn btn-primary">Confirmer la Réservation</button>
             </form>
