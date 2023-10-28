@@ -13,16 +13,15 @@ public class EmailService {
 
     public EmailService() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
+        mailSender.setHost("smtp.hotmail.com");
         mailSender.setPort(587);
-        mailSender.setUsername("votreadresse@gmail.com");
-        mailSender.setPassword("votremotdepasse");
+        mailSender.setUsername("nitramenicar@hotmail.com");
+        mailSender.setPassword("Rasstek1");
 
         javaMailSender = mailSender;
 
-        // Configuration additionnelle si nécessaire
-        // javaMailSender.getJavaMailProperties().put("mail.smtp.starttls.enable", "true");
-        // javaMailSender.getJavaMailProperties().put("mail.smtp.auth", "true");
+
+
     }
 
     public void sendEmail(String to, String subject, String body) {

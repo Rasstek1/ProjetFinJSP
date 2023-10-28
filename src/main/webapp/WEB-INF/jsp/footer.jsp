@@ -8,7 +8,7 @@
         <p id="current-time"></p>
     </div>
     <div class="footer-section">
-        <p>&copy; ${year} Librairie Equinox - 102 de la mine, Gatineau, Quebec</p>
+        <p>&copy; ${year} Les Chalets du Quebec - 102 de la mine, Gatineau, Quebec</p>
     </div>
 
     <!-- Section d'heure au centre -->

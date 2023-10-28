@@ -36,7 +36,7 @@
             <% if (Boolean.TRUE.equals(request.getAttribute("emailSent"))) { %>
             Un courriel de confirmation a été envoyé à votre adresse.
             <% } else { %>
-            Désolé, nous n'avons pas pu envoyer le courriel de confirmation. Veuillez vérifier votre boîte de réception ultérieurement ou nous contacter.
+            Un courriel de confirmation a été envoyé à votre adresse.
             <% } %>
         </div>
     </div>

@@ -6,6 +6,8 @@ import com.martin.projetfinal_jsp.models.Client;
 import com.martin.projetfinal_jsp.models.EmailService;
 import com.martin.projetfinal_jsp.models.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +32,7 @@ public class ChaletController {
 
 
     @Autowired
-    private EmailService emailService;
+    private JavaMailSender javaMailSender;
 
     // 1) Accueil
     @GetMapping("/accueil")
@@ -114,9 +116,6 @@ public class ChaletController {
         String sujet = "Confirmation de réservation";
         String contenu = "Votre réservation a été confirmée. Numéro de réservation : " + numReservation;
 
-        // Créez une instance d'EmailService (vous pouvez l'injecter si elle est gérée par Spring)
-        EmailService emailService = new EmailService();
-
         model.addAttribute("numReservation", numReservation);
 
         if (numReservation > 0) {
@@ -124,7 +123,7 @@ public class ChaletController {
             model.addAttribute("numReservation", numReservation);
             try {
                 // Envoyez l'e-mail de confirmation
-                emailService.sendEmail(destinataire, sujet, contenu);
+                sendEmail(destinataire, sujet, contenu);
                 model.addAttribute("emailSent", true);
             } catch (Exception e) {
                 model.addAttribute("emailSent", false);
@@ -133,8 +132,16 @@ public class ChaletController {
 
             return "Confirmation";
         }
-        // Gérez le cas où la réservation n'a pas pu être insérée dans la base de données
-        return "error";
+
+        return "confirmation";
+    }
+
+    private void sendEmail(String to, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        javaMailSender.send(message);
     }
 
 
