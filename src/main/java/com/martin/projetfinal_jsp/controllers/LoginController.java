@@ -2,6 +2,7 @@ package com.martin.projetfinal_jsp.controllers;
 
 
 
+import com.martin.projetfinal_jsp.data.AuthenticationDataContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -27,9 +28,7 @@ import com.martin.projetfinal_jsp.models.Client;
 import com.martin.projetfinal_jsp.models.MyAuthenticationProvider;
 import com.martin.projetfinal_jsp.models.MyUserManager;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +51,11 @@ public class LoginController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Autowired
+    private AuthenticationDataContext authenticationDataContext; // Instance de la classe contenant la méthode getPassword
 
+    @Autowired
+    private AuthenticationDataContext dataContext;  // Instance de la classe contenant la méthode changePassword
 
     @GetMapping("/connexion")
     public String login(@RequestParam(value = "courriel", required = false) String courriel,
@@ -176,26 +179,41 @@ public class LoginController {
     // Affiche le formulaire de changement de mot de passe
     @GetMapping("/motDePasse")
     public String afficherFormulaireChangementMotPasse() {
-        return "motDePasse"; // le nom de la vue (jsp) pour le formulaire de changement de mot de passe
+        return "motDePasse"; //  formulaire de changement de mot de passe
     }
 
-    // Gère la soumission du formulaire de changement de mot de passe
-// Gère la soumission du formulaire de changement de mot de passe
+
     @PostMapping("/changerMotDePasse")
     public String changerMotDePasse(@RequestParam("ancienMotDePasse") String ancienMotDePasse,
                                     @RequestParam("nouveauMotDePasse") String nouveauMotDePasse,
                                     RedirectAttributes redirectAttributes) {
+
+        System.out.println("Ancien Mot de Passe: " + ancienMotDePasse);
+        System.out.println("Nouveau Mot de Passe: " + nouveauMotDePasse);
+
         try {
-            usermanager.changePassword(ancienMotDePasse, nouveauMotDePasse);
-            // Redirigez l'utilisateur vers une page de succès si le changement de mot de passe réussit.
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String courriel = authentication.getName();
+            String currentPassword = authenticationDataContext.getPassword(courriel);
+
+            if (passwordEncoder.matches(ancienMotDePasse, currentPassword)) {
+                String newPasswordEncoded = passwordEncoder.encode(nouveauMotDePasse);
+
+                // Utilisation de l'instance pour appeler la méthode changePassword de la classe AuthenticationDataContext
+                dataContext.changePassword(courriel, currentPassword, newPasswordEncoded);
+
+            } else {
+                throw new RuntimeException("L'ancien mot de passe est incorrect");
+            }
+
             return "redirect:/motDePasseSuccess";
-        } catch (Exception e) {
-            e.printStackTrace(); // Ajoutez cette ligne pour afficher les détails de l'exception dans la console.
-            // En cas d'erreur, ajoutez un attribut d'erreur et redirigez l'utilisateur vers la même page "motDePasse".
+        } catch (RuntimeException e) {
+            e.printStackTrace();
             redirectAttributes.addAttribute("MPError", true);
             return "redirect:/motDePasse";
         }
     }
+
 
 
 

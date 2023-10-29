@@ -35,7 +35,7 @@ public class AuthenticationDataContext {
     }
 
     // Les méthodes utilitaires privées
-    private String getPassword(String courriel) {
+   public String getPassword(String courriel) {
         return this.jdbcTemplate.queryForObject(selectPasswordQuery, String.class, courriel);
     }
 

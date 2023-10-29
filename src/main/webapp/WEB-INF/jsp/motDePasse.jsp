@@ -30,18 +30,19 @@
             <form action="${pageContext.request.contextPath}/changerMotDePasse" method="post">
                 <div class="form-group">
                     <label for="ancienMotDePasse">Ancien Mot de Passe :</label>
-                    <input type="password" class="form-control" id="ancienMotDePasse" name="ancienMotDePasse" required>
+                    <input type="password" class="form-control" id="ancienMotDePasse" name="ancienMotDePasse" autocomplete="current-password" required>
                 </div>
 
                 <div class="form-group">
                     <label for="nouveauMotDePasse">Nouveau Mot de Passe :</label>
-                    <input type="password" class="form-control" id="nouveauMotDePasse" name="nouveauMotDePasse" required>
+                    <input type="password" class="form-control" id="nouveauMotDePasse" name="nouveauMotDePasse" autocomplete="new-password" required>
                 </div>
 
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
                 <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
             </form>
+
 
 
 
