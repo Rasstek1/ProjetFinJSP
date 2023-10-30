@@ -29,6 +29,7 @@ public class AuthenticationDataContext {
     private final String changePasswordQuery = "UPDATE Clients SET Mot_Passe=? WHERE Courriel=? AND Mot_Passe=?";
     private final String userExistsQuery = "SELECT COUNT(*) FROM Clients WHERE Courriel=?";
 
+    private final String selectAllClientInfoQuery = "SELECT * FROM Clients WHERE Courriel=?";
 
     public AuthenticationDataContext(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -117,6 +118,28 @@ public class AuthenticationDataContext {
             // Gérer l'exception, par exemple, journaliser l'erreur ou lever une exception personnalisée.
             ex.printStackTrace(); // À des fins de débogage
         }
+    }
+
+    public Client getClientInfo(String courriel) {
+        return jdbcTemplate.queryForObject(
+                selectAllClientInfoQuery,
+                new Object[]{courriel},
+                new RowMapper<Client>() {
+                    @Override
+                    public Client mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        return new Client(
+                                rs.getString("Nom"),
+                                rs.getString("Prenom"),
+                                rs.getString("Adresse"),
+                                rs.getString("Telephone"),
+                                rs.getString("Courriel"),
+                                rs.getString("Mot_Passe"),
+                                true,  // Supposons que le statut soit toujours vrai
+                                getAuthorities(rs.getString("Courriel"))
+                        );
+                    }
+                }
+        );
     }
 
 }

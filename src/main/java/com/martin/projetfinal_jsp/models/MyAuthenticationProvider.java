@@ -26,7 +26,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         String courriel = authentication.getName(); // Utilisez courriel au lieu de username
         String password = (String) authentication.getCredentials();
         // Récupérer le client de la base de données
-        Client client = (Client) this.userDetailsManager.loadUserByUsername(courriel); // Utilisez Client au lieu de Usager
+        Client client = this.userDetailsManager.getCompleteClientInfo(courriel);
+
         // Vérifier l'existence du client
         if (client == null) {
             throw new UsernameNotFoundException("Le client est inexistant");

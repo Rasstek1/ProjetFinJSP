@@ -7,7 +7,6 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,9 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class MyUserManager implements UserDetailsService {
@@ -38,32 +34,15 @@ public class MyUserManager implements UserDetailsService {
         return passwordEncoder;
     }
     public UserDetails loadUserByUsername(String username) {
-        String sql = "SELECT * FROM Clients WHERE courriel = ?";
-
         try {
-            return jdbcTemplate.queryForObject(sql, new Object[]{username}, (rs, rowNum) -> {
-                // Récupération de tous les champs du résultat
-                String nom = rs.getString("nom");
-                String prenom = rs.getString("prenom");
-                String adresse = rs.getString("adresse");
-                String telephone = rs.getString("telephone");
-                String courriel = rs.getString("courriel");
-                String motPasse = rs.getString("motPasse");
-                boolean status = rs.getBoolean("status");
-
-                // Log des valeurs récupérées
-                logger.info("Retrieved values!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: nom=" + nom + ", prenom=" + prenom + ", adresse=" + adresse +
-                        ", telephone=" + telephone + ", courriel=" + courriel + ", motPasse=" + motPasse);
-
-                List<GrantedAuthority> roles = new ArrayList<>();
-                return new Client(nom, prenom, adresse, telephone, courriel, motPasse, status, roles);
-            });
-        } catch (EmptyResultDataAccessException e) {
-            logger.error("User not found", e);
+            UserDetails user = this.authenticationdatacontext.loadUserByUsername(username);
+            // Ajoutez des logs ici pour vérifier les propriétés de 'user'
+            logger.info("User details loaded: " + user.toString());
+            return user;
+        } catch (EmptyResultDataAccessException ex) {
             throw new UsernameNotFoundException("User not found");
         }
     }
-
 
 
     public void createUser(Client client) {
@@ -109,4 +88,14 @@ public class MyUserManager implements UserDetailsService {
     public boolean userExists(String username) {
         return this.authenticationdatacontext.userExists(username);
     }
+
+
+    public Client getCompleteClientInfo(String username) {
+        try {
+            return this.authenticationdatacontext.getClientInfo(username);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new UsernameNotFoundException("User not found");
+        }
+    }
+
 }

@@ -47,12 +47,15 @@ public class LoginController {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
+    private MyUserManager myUserManager;
+
+    @Autowired
     public LoginController(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
     @Autowired
-    private AuthenticationDataContext authenticationDataContext; // Instance de la classe contenant la méthode getPassword
+    private AuthenticationDataContext authenticationDataContext; //
 
     @Autowired
     private AuthenticationDataContext dataContext;  // Instance de la classe contenant la méthode changePassword
@@ -84,11 +87,11 @@ public class LoginController {
             // Créer un client à partir d'un nom d'utilisateur et d'un mot de passe
             String username = req.getParameter("username");
             String password = req.getParameter("password");
-            Client client = new Client(username, password, new ArrayList<>());
             Authentication token =  new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
 
             // Valider le jeton d'authentification si possible
             Authentication aut = myprovider.authenticate(token);
+
             // Sauvegarder le token dans la session
             securitycontext.setAuthentication(aut);
             securityContextRepository.saveContext(securitycontext, req, response);
@@ -97,8 +100,14 @@ public class LoginController {
             SavedRequest savedRequest = new HttpSessionRequestCache().getRequest(req, response);
 
             if (aut.isAuthenticated()) {
+                // Récupérer des informations complètes sur le client
+                Client client = myUserManager.getCompleteClientInfo(username);
+                HttpSession session = req.getSession(true);
+                session.setAttribute("ClientInfo", client);
+
                 // Si l'authentification réussit, redirigez vers la page d'accueil
                 return "redirect:/accueil";
+
             } else {
                 // Sinon, redirigez vers la page de connexion avec un message d'erreur
                 return "redirect:/connexion?loginError=true";
@@ -107,16 +116,15 @@ public class LoginController {
             // Gestion de l'exception en cas d'erreur d'authentification
             HttpSession session = req.getSession(true);
             session.setAttribute("LoginError", ex.getMessage());
-            // En cas d'échec de la connexion, restez sur la page de connexion avec un message d'erreur
             return "redirect:/connexion?loginError=true";
         } catch (Exception ex) {
             // Gestion de l'exception générale
             HttpSession session = req.getSession(true);
             session.setAttribute("LoginError", ex.getMessage());
-            // En cas d'échec de la connexion, restez sur la page de connexion avec un message d'erreur
             return "redirect:/connexion?loginError=true";
         }
     }
+
 
     @GetMapping("/logoutPage")
     public String logoutPage() {
