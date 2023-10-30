@@ -4,7 +4,7 @@
 
 <%@ include file="header.jsp" %>
 
-    <div class="content" id="content">
+    <div class="content">
         <div class="card shadow mb-4 form-container">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Confirmation</h6>

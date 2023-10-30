@@ -55,7 +55,19 @@ public class Client implements UserDetails {
         this.roles = authorities;
     }
 
-
+    @Override
+    public String toString() {
+        return "Client{" +
+                "nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", adresse='" + adresse + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", courriel='" + courriel + '\'' +
+                ", motPasse='" + motPasse + '\'' +
+                ", status=" + status +
+                ", roles=" + roles +
+                '}';
+    }
 
     public String getNom() {
         return nom;

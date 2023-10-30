@@ -5,9 +5,11 @@ import com.martin.projetfinal_jsp.models.Chalet;
 import com.martin.projetfinal_jsp.models.Client;
 import com.martin.projetfinal_jsp.models.EmailService;
 import com.martin.projetfinal_jsp.models.Reservation;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +24,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 
+
 @Controller
 public class ChaletController {
 
@@ -30,10 +33,18 @@ public class ChaletController {
 
     @Autowired
     private EmailService emailService;
-
+    private static final Logger logger = LoggerFactory.getLogger(ChaletController.class);
     // 1) Accueil
     @GetMapping("/accueil")
     public String accueil() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        logger.info("Authentication Object: " + authentication);
+
+        if (authentication.getPrincipal() instanceof Client) {
+            Client client = (Client) authentication.getPrincipal();
+            logger.info("Client Object: " + client.toString());
+        }
+
         return "accueil";
     }
 
@@ -78,9 +89,24 @@ public class ChaletController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String prenom = ((Client) userDetails).getPrenom();
-            String courriel = userDetails.getUsername(); // C'est déjà le courriel
-            model.addAttribute("nomClient", prenom);
+            Client client = (Client) userDetails;
+            String prenom = client.getPrenom();
+            String courriel = client.getCourriel();
+            String telephone = client.getTelephone();  // Assurez-vous que cette variable est bien déclarée dans votre classe Client
+
+            // Log des informations
+            logger.info("Informations complètes du Client :");
+            logger.info("Nom : " + client.getNom());
+            logger.info("Prénom : " + client.getPrenom());
+            logger.info("Adresse : " + client.getAdresse());
+            logger.info("Téléphone : " + client.getTelephone());
+            logger.info("Courriel : " + client.getCourriel());
+
+
+
+
+            model.addAttribute("nomClient", prenom);  // Utilisez 'prenom' pour remplir 'nomClient'
+            model.addAttribute("telephone", telephone);
             model.addAttribute("courriel", courriel);
         }
 
@@ -95,6 +121,8 @@ public class ChaletController {
         model.addAttribute("chalet", chaletDbContext.selectChaletByNumero(numChalet));
         return "reservation";
     }
+
+
 
 
     // 4) Confirmer la réservation
@@ -113,7 +141,7 @@ public class ChaletController {
 
             // Pour conserver les données du formulaire lors du retour à la vue en cas de non disponibilité
             model.addAttribute("nomClient", reservation.getNomClient());
-
+            model.addAttribute("telephone", reservation.getTelephone());
             model.addAttribute("courriel", reservation.getCourriel());
             return "reservation"; // Retourne à la même vue avec un message d'indisponibilité
         }
@@ -155,30 +183,29 @@ public class ChaletController {
     }
 
 
+    @GetMapping("/photo")
+    public String showPhotoDetails(@RequestParam("numChalet") int numChalet, Model model) {
+        // Récupérez les détails du chalet en utilisant numChalet
+        Chalet chalet = chaletDbContext.selectChaletByNumero(numChalet);
+        System.out.println("Chalet: " + chalet);
+        System.out.println("Photos: " + chalet.getListePhotos());
 
-        @GetMapping("/photo")
-        public String showPhotoDetails ( @RequestParam("numChalet") int numChalet, Model model){
-            // Récupérez les détails du chalet en utilisant numChalet
-            Chalet chalet = chaletDbContext.selectChaletByNumero(numChalet);
-            System.out.println("Chalet: " + chalet);
-            System.out.println("Photos: " + chalet.getListePhotos());
-
-            if (chalet == null) {
-                // Handle the error, e.g., redirect to an error page or set an error message
-                return "error";  // Change to the appropriate view name for your error page
-            }
-
-            // Ajoutez les détails du chalet et la liste des photos au modèle
-            model.addAttribute("chalet", chalet);
-            model.addAttribute("photos", chalet.getListePhotos());
-            model.addAttribute("test", "Ceci est un test");
-            System.out.println("Type de la liste des photos : " + chalet.getListePhotos().getClass().getName());
-            // Retournez le nom de la vue JSP
-            return "photo";
+        if (chalet == null) {
+            // Handle the error, e.g., redirect to an error page or set an error message
+            return "error";  // Change to the appropriate view name for your error page
         }
 
-
+        // Ajoutez les détails du chalet et la liste des photos au modèle
+        model.addAttribute("chalet", chalet);
+        model.addAttribute("photos", chalet.getListePhotos());
+        model.addAttribute("test", "Ceci est un test");
+        System.out.println("Type de la liste des photos : " + chalet.getListePhotos().getClass().getName());
+        // Retournez le nom de la vue JSP
+        return "photo";
     }
+
+
+}
 
 
 // 4) Confirmer la réservation
