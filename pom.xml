@@ -72,11 +72,8 @@
         <!-- dépendance  de spring security pour l'authentification   -->
 
 
-        <dependency>
-            <groupId>com.icegreen</groupId>
-            <artifactId>greenmail</artifactId>
-            <version>1.6.1</version> <!-- Assurez-vous d'utiliser la bonne version -->
-        </dependency>
+
+
 
         <dependency>
 

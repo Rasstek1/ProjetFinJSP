@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<div class="content">
+<div class="content" id="content">
     <div class="container" style="margin-bottom: 200px; margin-top:50px;">
         <div class="row justify-content-center">
             <div class="col-md-8">

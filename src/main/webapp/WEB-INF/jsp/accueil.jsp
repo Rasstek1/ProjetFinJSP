@@ -16,7 +16,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Ajout de Chalet</h6>
                 </div>
                 <div class="card-body">
-                    <h2>Bienvenue sur le site des chalets Québec</h2>
+                    <h2>Bienvenue sur Les chalets du Québec</h2>
 
                 </div>
             </div>

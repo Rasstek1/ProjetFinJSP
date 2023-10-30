@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -30,9 +28,8 @@ public class ChaletController {
     @Autowired
     private ChaletDbContext chaletDbContext;
 
-
     @Autowired
-    private JavaMailSender javaMailSender;
+    private EmailService emailService;
 
     // 1) Accueil
     @GetMapping("/accueil")
@@ -103,8 +100,35 @@ public class ChaletController {
     // 4) Confirmer la réservation
     @PostMapping("/confirmation")
     public String confirmReserverChalet(Reservation reservation, Model model) {
+        // Calcul de la date de début et de fin basée sur dateLocation et duree
+        Date startDate = reservation.getStartDate();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        calendar.add(Calendar.DATE, reservation.getDuree());
+        Date endDate = calendar.getTime();
+
+        // Vérifiez la disponibilité du chalet
+        if (!chaletDbContext.isAvailable(reservation.getNumChalet(), startDate, endDate)) {
+            model.addAttribute("availability", false);
+
+            // Pour conserver les données du formulaire lors du retour à la vue en cas de non disponibilité
+            model.addAttribute("nomClient", reservation.getNomClient());
+
+            model.addAttribute("courriel", reservation.getCourriel());
+            return "reservation"; // Retourne à la même vue avec un message d'indisponibilité
+        }
+
         // Insérez la réservation dans la base de données
         int numReservation = chaletDbContext.insertReservation(reservation);
+
+        System.out.println("Date de début : " + reservation.getStartDate());
+
+
+        if (numReservation <= 0) {
+            model.addAttribute("availability", false);
+            return "reservation"; // Quelque chose a mal tourné pendant l'insertion
+        }
+
         // Récupérez le numéro du chalet et le prix à partir de la réservation
         int numChalet = reservation.getNumChalet();
         BigDecimal prix = reservation.getPrix();
@@ -118,30 +142,16 @@ public class ChaletController {
 
         model.addAttribute("numReservation", numReservation);
 
-        if (numReservation > 0) {
-            // La réservation a été insérée avec succès
-            model.addAttribute("numReservation", numReservation);
-            try {
-                // Envoyez l'e-mail de confirmation
-                sendEmail(destinataire, sujet, contenu);
-                model.addAttribute("emailSent", true);
-            } catch (Exception e) {
-                model.addAttribute("emailSent", false);
-                e.printStackTrace();
-            }
-
-            return "Confirmation";
+        try {
+            // Envoyez l'e-mail de confirmation
+            emailService.sendEmail(destinataire, sujet, contenu);
+            model.addAttribute("emailSent", true);
+        } catch (Exception e) {
+            model.addAttribute("emailSent", false);
+            e.printStackTrace();
         }
 
         return "confirmation";
-    }
-
-    private void sendEmail(String to, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-        javaMailSender.send(message);
     }
 
 

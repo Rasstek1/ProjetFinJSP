@@ -1,6 +1,7 @@
 package com.martin.projetfinal_jsp.models;
 
 import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,14 +12,16 @@ public class Reservation {
     private String telephone;
     private String nomClient;
     private String courriel;
-    @Column// precision = 10, scale = 2 Ces valeurs doivent correspondre à celles de votre colonne DECIMAL dans la base de données.
+    @Column
+// precision = 10, scale = 2 Ces valeurs doivent correspondre à celles de votre colonne DECIMAL dans la base de données.
     private BigDecimal prix;
     private int duree;
-    private Date dateLocation;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date startDate;
 
     // Constructeurs
 
-    public Reservation(int numReservation, int numChalet, String telephone, String nomClient, String courriel, BigDecimal prix, int duree, Date dateLocation) {
+    public Reservation(int numReservation, int numChalet, String telephone, String nomClient, String courriel, BigDecimal prix, int duree, Date startDate) {
         this.numReservation = numReservation;
         this.numChalet = numChalet;
         this.telephone = telephone;
@@ -26,7 +29,8 @@ public class Reservation {
         this.courriel = courriel;
         this.prix = prix;
         this.duree = duree;
-        this.dateLocation = dateLocation;
+        this.startDate = startDate;
+
     }
 
     // Getters et Setters
@@ -86,12 +90,14 @@ public class Reservation {
         this.duree = duree;
     }
 
-    public Date getDateLocation() {
-        return dateLocation;
+
+
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setDateLocation(Date dateLocation) {
-        this.dateLocation = dateLocation;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     // Constructeurs

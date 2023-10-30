@@ -19,7 +19,19 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Reservation</h6>
         </div>
+
+
+
+
         <div class="card-body">
+            <c:if test="${availability != null}">
+                <div class="alert alert-danger" role="alert">
+                    <c:if test="${not availability}">
+                        <p>Ce chalet n'est pas disponible pour les dates sélectionnées.</p>
+                    </c:if>
+                </div>
+            </c:if>
+
             <form action="${pageContext.request.contextPath}/confirmation" method="post">
                 <input type="hidden" name="numChalet" value="${chalet.numChalet}" />
                 <input type="hidden" name="prix" value="${chalet.prix}" />
@@ -41,9 +53,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="dateReservation">Date de Réservation :</label>
-                    <input type="date" class="form-control" id="dateReservation" name="dateReservation" required>
+                    <label for="startDate">Date de Réservation :</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" required>
                 </div>
+
 
                 <div class="form-group">
                     <label for="duree">Durée de la Réservation (en jours) :</label>
