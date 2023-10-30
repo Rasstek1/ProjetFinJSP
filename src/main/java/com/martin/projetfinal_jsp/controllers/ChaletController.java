@@ -8,7 +8,9 @@ import com.martin.projetfinal_jsp.models.Reservation;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.validation.BindingResult;
+
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -94,29 +97,20 @@ public class ChaletController {
             String courriel = client.getCourriel();
             String telephone = client.getTelephone();  // Assurez-vous que cette variable est bien déclarée dans votre classe Client
 
-            // Log des informations
-            logger.info("Informations complètes du Client :");
-            logger.info("Nom : " + client.getNom());
-            logger.info("Prénom : " + client.getPrenom());
-            logger.info("Adresse : " + client.getAdresse());
-            logger.info("Téléphone : " + client.getTelephone());
-            logger.info("Courriel : " + client.getCourriel());
-
-
-
-
             model.addAttribute("nomClient", prenom);  // Utilisez 'prenom' pour remplir 'nomClient'
             model.addAttribute("telephone", telephone);
             model.addAttribute("courriel", courriel);
+
+            // Maintenant, vous pouvez créer une nouvelle instance de Reservation avec les valeurs par défaut
+            Reservation reservation = new Reservation();
+            reservation.setNumChalet(numChalet);
+            reservation.setPrix(BigDecimal.ZERO); // Vous pouvez définir une valeur par défaut appropriée
+
+            // Assignez le numéro de téléphone du client à la réservation
+            reservation.setTelephone(telephone);  // Assurez-vous que votre classe Reservation a une méthode setTelephone
+
+            model.addAttribute("reservation", reservation);
         }
-
-        // Maintenant, vous pouvez créer une nouvelle instance de Reservation avec les valeurs par défaut
-        Reservation reservation = new Reservation();
-        reservation.setNumChalet(numChalet);
-        reservation.setPrix(BigDecimal.ZERO); // Vous pouvez définir une valeur par défaut appropriée
-        // Définissez d'autres valeurs par défaut pour votre réservation ici
-
-        model.addAttribute("reservation", reservation);
 
         model.addAttribute("chalet", chaletDbContext.selectChaletByNumero(numChalet));
         return "reservation";
@@ -127,7 +121,15 @@ public class ChaletController {
 
     // 4) Confirmer la réservation
     @PostMapping("/confirmation")
-    public String confirmReserverChalet(Reservation reservation, Model model) {
+    public String confirmReserverChalet(@ModelAttribute("reservation") @Valid Reservation reservation, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            // Erreur de validation, capturez le numChalet
+            int numChalet = reservation.getNumChalet();
+
+            // Redirigez l'utilisateur vers la page du formulaire avec le numChalet en tant que paramètre
+            return "redirect:/reserverChalet/" + numChalet + "?error=true";
+        }
+
         // Calcul de la date de début et de fin basée sur dateLocation et duree
         Date startDate = reservation.getStartDate();
         Calendar calendar = Calendar.getInstance();
@@ -150,7 +152,6 @@ public class ChaletController {
         int numReservation = chaletDbContext.insertReservation(reservation);
 
         System.out.println("Date de début : " + reservation.getStartDate());
-
 
         if (numReservation <= 0) {
             model.addAttribute("availability", false);

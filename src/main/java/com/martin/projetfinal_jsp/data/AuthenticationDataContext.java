@@ -121,26 +121,33 @@ public class AuthenticationDataContext {
     }
 
     public Client getClientInfo(String courriel) {
-        return jdbcTemplate.queryForObject(
-                selectAllClientInfoQuery,
-                new Object[]{courriel},
-                new RowMapper<Client>() {
-                    @Override
-                    public Client mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return new Client(
-                                rs.getString("Nom"),
-                                rs.getString("Prenom"),
-                                rs.getString("Adresse"),
-                                rs.getString("Telephone"),
-                                rs.getString("Courriel"),
-                                rs.getString("Mot_Passe"),
-                                true,  // Supposons que le statut soit toujours vrai
-                                getAuthorities(rs.getString("Courriel"))
-                        );
+        try {
+            return jdbcTemplate.queryForObject(
+                    selectAllClientInfoQuery,
+                    new Object[]{courriel},
+                    new RowMapper<Client>() {
+                        @Override
+                        public Client mapRow(ResultSet rs, int rowNum) throws SQLException {
+                            return new Client(
+                                    rs.getString("Nom"),
+                                    rs.getString("Prenom"),
+                                    rs.getString("Adresse"),
+                                    rs.getString("Telephone"),
+                                    rs.getString("Courriel"),
+                                    rs.getString("Mot_Passe"),
+                                    true,
+                                    getAuthorities(rs.getString("Courriel"))
+                            );
+                        }
                     }
-                }
-        );
+            );
+        } catch (EmptyResultDataAccessException e) {
+            // Aucun résultat trouvé, renvoie null ou une valeur par défaut
+            return null;
+        }
     }
+
+
 
 }
 
