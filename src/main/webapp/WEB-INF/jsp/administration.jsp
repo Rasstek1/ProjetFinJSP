@@ -27,6 +27,7 @@
                 <div class="card-body">
                     <!-- Le formulaire pour ajouter un chalet -->
                     <form action="ajouterChalet" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                         <div class="mb-3">
                             <label for="nombreChambres" class="form-label">Nombre de chambres :</label>
                             <input type="number" id="nombreChambres" name="nombreChambres" class="form-control"
