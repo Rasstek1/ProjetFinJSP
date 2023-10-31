@@ -17,6 +17,19 @@
     font-size: 0.85em;
 }
 
+body {
+    background-color: #f3f1f1;
+}
+
+.content {
+    margin-left: 15%; /* Marge à gauche */
+    margin-right: 15%; /* Marge à droite */
+    margin-top: 30px;
+    padding-bottom: 100px;
+
+}
+
+
 /* Diminue la taille de la police pour les écrans de taille moyenne */
 @media (max-width: 992px) {
     .top-bar {
@@ -25,13 +38,6 @@
     }
 }
 
-/* Diminue encore plus la taille de la police pour les petits écrans */
-@media (max-width: 850px) {
-    .heures p{
-        color:transparent;
-        display: none;
-    }
-}
 
 .video-background {
     position: fixed;
@@ -72,90 +78,17 @@
     margin-right: 0; /* Supprimez la marge droite du dernier <p> */
 }
 
-body {
-    background-color: #f3f1f1;
-}
 
-.content {
-    margin-left:15%; /* Marge à gauche */
-    margin-right:15%; /* Marge à droite */
-margin-top:30px;
-    padding-bottom: 100px;
-
-}
-.welcome{
+.welcome {
     border: 3px solid #ddd;
     padding: 20px;
     max-width: 100%;
-    background-color:paleturquoise;
-}
-.confirm{
-    margin: auto;
-    max-width: 80%;
-    padding: 20px; /* 10px est le padding vertical (haut/bas) et 5px est le padding horizontal (gauche/droit) */
-    border: 1px solid #ddd;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color:paleturquoise;
-}
-#footer {
-    background-color: dodgerblue;
-    padding: 20px;
-    font-size: 14px;
-
-    bottom: 0;
-    width: 100%;
-    height: 100px;
-    color: white;
-    margin-top: 100px;
+    background-color: paleturquoise;
 }
 
-
-
-.footer-container {
-    display: flex;
-    justify-content: space-between; /* Espacement entre les sections */
-    align-items: center; /* Centrage vertical des éléments */
-    padding: 20px 0; /* Espace au-dessus et au-dessous du footer */
-    background-color: #333; /* Couleur d'arrière-plan, à ajuster selon vos préférences */
-
-}
-
-
-
-.footer-section {
-    flex-basis: 30%; /* Pour diviser le footer en 3 sections approximativement égales */
-    text-align: center; /* Centre le contenu de chaque section */
-}
-
-.footer-links {
-    list-style-type: none; /* Supprime les puces des listes */
-    padding: 0;
-
-}
-
-.footer-links a {
-    text-decoration: none; /* Pour enlever le soulignement */
-    color:#ffd071; /* Couleur des liens */
-
-}
-
-.footer-links li {
-    margin: 5px 0; /* Espacement entre les liens */
-
-}
-
-.footer-section #current-time {
-    font-size: 14px;            /* Taille de la police */
-    color: #f4f4f4;            /* Couleur de la police */
-
-}
-
-
+/************************************HEADER********************************************/
 header {
-    height: 100px;
+    min-height: 200px;
     display: flex;
     align-items: center;
 }
@@ -170,61 +103,6 @@ header h2 {
     font-weight: lighter;
     padding-right: 20px;
 }
-/*****************************************************/
-
-/***********************************************************************************************/
-
-/* Style de la bannière */
-.banner {
-    background-image: url('../img/Banner.webp');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center; /* Centre l'image horizontalement et verticalement */
-    background-origin: border-box; /* Garantit que l'image est centrée par rapport à la boîte de bordure */
-    height: 50vh;
-}
-/* Banner pour les écrans de taille moyenne */
-@media (max-width: 992px) {
-    .banner {
-        background-image: url('../img/Banner.webp');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center; /* Centre l'image horizontalement et verticalement */
-        background-origin: border-box; /* Garantit que l'image est centrée par rapport à la boîte de bordure */
-        height: 50vh;
-    }
-}
-
-/* Banner pour les petits écrans */
-@media (max-width: 768px) {
-    .banner {
-        background-image: url('../img/Banner.webp');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center; /* Centre l'image horizontalement et verticalement */
-        background-origin: border-box; /* Garantit que l'image est centrée par rapport à la boîte de bordure */
-        height: 50vh;
-    }
-}
-
-.book-box {
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin: 10px;
-}
-
-.book-box img {
-    max-width: 100%;
-    height: auto;
-}
-
-.content-wrapper {
-    margin-bottom: 100px; /* Ajoutez une marge inférieure pour éviter que le footer ne cache le contenu */
-}
-
-
-/******************************************************************************/
-
 .logo {
     max-width: 100%; /* Largeur maximale du logo */
 }
@@ -235,37 +113,51 @@ header h2 {
     max-height: 100px;
     margin-left: 10px;
 }
-
-.navbar-brand {
-    width: 250px; /* Ajustez cette valeur en fonction de vos besoins */
-    display: flex; /* Pour aligner horizontalement le logo et le texte */
-    align-items: center; /* Centre verticalement le logo et le texte */
+.navbar-collapse {
+    flex-grow: 0; /* Assurez-vous que cela ne prend pas plus de place que nécessaire */
 }
 
 
-.brand-name {
-    margin-left: 10px;  /* Espacement entre le logo et le texte */
-    color: mediumseagreen;
-    font-size: 1.5em;  /* Ajustez selon votre préférence */
-}
 /* Pour la largeur d'écran <= 768px */
 @media (max-width: 768px) {
     .logo-img {
-        max-width: 60px;      /* Réduction de la taille du logo */
-        max-height: 60px;     /* Réduction de la taille du logo */
+        max-width: 60px; /* Réduction de la taille du logo */
+        max-height: 60px; /* Réduction de la taille du logo */
     }
 
     .navbar-brand {
-        flex-direction: column;  /* Pour mettre le texte sous le logo */
-        align-items: center;     /* Centrage horizontal */
-        width: auto;             /* Laisser la largeur s'adapter automatiquement */
+        flex-direction: column; /* Pour mettre le texte sous le logo */
+        align-items: center; /* Centrage horizontal */
+        width: auto; /* Laisser la largeur s'adapter automatiquement */
     }
 
     .brand-name {
-        margin-left: 0;         /* Retirer l'espacement à gauche */
-        font-size: 1.2em;       /* Réduction de la taille du texte */
+        margin-left: 0; /* Retirer l'espacement à gauche */
+        font-size: 1.2em; /* Réduction de la taille du texte */
     }
 }
+
+/********************************************************************************************/
+
+.confirm {
+    margin: auto;
+    max-width: 80%;
+    padding: 20px; /* 10px est le padding vertical (haut/bas) et 5px est le padding horizontal (gauche/droit) */
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: paleturquoise;
+}
+
+
+
+
+/******************************************************************************/
+
+
+
 /****************************************************************************************************
 
 
@@ -287,36 +179,41 @@ header h2 {
     top: 5px; /* ou ajustez selon votre besoin */
     right: 10px; /* ou ajustez selon votre besoin */
 }
+
 .toast {
     border-radius: 3px;
 }
+
 .toast {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 .toast {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-/******accueil***********/
+
+/**************************************accueil*************************************/
 .custom-links a {
-    text-decoration: none;  /* Suppression du soulignement */
-    font-weight: bold;      /* Texte en gras */
+    text-decoration: none; /* Suppression du soulignement */
+    font-weight: bold; /* Texte en gras */
 }
+
 .custom-title, .custom-desc {
-    text-align: center;  /* Centrer le titre et la description */
+    text-align: center; /* Centrer le titre et la description */
 }
+
 .custom-images img {
-    vertical-align: bottom;  /* Aligner les images en bas */
+    vertical-align: bottom; /* Aligner les images en bas */
 
 
 }
+
 .custom-images {
-    margin-left:50px;
+    margin-left: 50px;
 }
 
 
-
-
-/*********************caroussel thumbnail***********************/
+/******************************caroussel thumbnail**********************************/
 
 .miniatures-container {
     overflow-x: auto;
@@ -342,4 +239,75 @@ header h2 {
 .btn-next {
     right: 0;
 }
+
 /****************************************************************/
+
+
+
+
+/***********************************FOOTER*********************************************/
+
+#footer {
+    background-color: dodgerblue;
+    padding: 20px;
+    font-size: 14px;
+
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    color: white;
+    margin-top: 100px;
+}
+
+
+.footer-container {
+    display: flex;
+    justify-content: space-between; /* Espacement entre les sections */
+    align-items: center; /* Centrage vertical des éléments */
+    padding: 20px 0; /* Espace au-dessus et au-dessous du footer */
+    background-color: #333; /* Couleur d'arrière-plan, à ajuster selon vos préférences */
+
+}
+.footer-section {
+    flex-basis: 30%; /* Pour diviser le footer en 3 sections approximativement égales */
+    text-align: center; /* Centre le contenu de chaque section */
+}
+
+.footer-links {
+    list-style-type: none; /* Supprime les puces des listes */
+    padding: 0;
+
+}
+
+.footer-links a {
+    text-decoration: none; /* Pour enlever le soulignement */
+    color: #ffd071; /* Couleur des liens */
+
+}
+
+.footer-links li {
+    margin: 5px 0; /* Espacement entre les liens */
+
+}
+
+.footer-section #current-time {
+    font-size: 14px; /* Taille de la police */
+    color: #f4f4f4; /* Couleur de la police */
+
+}
+
+/* Diminue encore plus la taille de la police pour les petits écrans */
+@media (max-width: 850px) {
+    .heures p {
+        color: transparent;
+        display: none;
+    }
+}
+
+
+/***********************************************************************************************/
+
+
+
+
+

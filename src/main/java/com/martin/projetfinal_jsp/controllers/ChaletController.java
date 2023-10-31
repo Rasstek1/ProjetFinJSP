@@ -37,12 +37,15 @@ public class ChaletController {
     @Autowired
     private EmailService emailService;
     private static final Logger logger = LoggerFactory.getLogger(ChaletController.class);
-    // 1) Accueil
+
+    // Page d'accueil
     @GetMapping("/accueil")
     public String accueil() {
+        // Obtient l'objet d'authentification de l'utilisateur connecté
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         logger.info("Authentication Object: " + authentication);
 
+        // Vérifie si l'utilisateur est un client et affiche ses informations
         if (authentication.getPrincipal() instanceof Client) {
             Client client = (Client) authentication.getPrincipal();
             logger.info("Client Object: " + client.toString());
@@ -51,32 +54,34 @@ public class ChaletController {
         return "accueil";
     }
 
-    // 2) Liste des chalets
+    // Liste des chalets
     @GetMapping("/listeChalets")
     public String listeChalets(Model model) {
-        List<Map<String, Object>> chaletsMapList = chaletDbContext.selectAllChalets();
+        // Récupère la liste de tous les chalets depuis la base de données
+        List<Map<String, Object>> chaletsMapList = chaletDbContext.selectAllChalets();//
         List<Chalet> chalets = new ArrayList<>();
-        int maxLength = 100; // Limite de longueur pour la description
+        int maxLength = 100; // Limite de longueur pour la description a 100 caractères
 
+        // Parcourt la liste des chalets et crée des objets Chalet pour chaque chalet
         for (Map<String, Object> map : chaletsMapList) {
             Chalet chalet = new Chalet();
-            chalet.setNumChalet((int) map.get("numChalet"));
-            chalet.setNombreChambres((int) map.get("nombreChambres"));
-            String description = (String) map.get("description");
+            chalet.setNumChalet((int) map.get("numChalet"));// fait le cast de l'objet map en int
+            chalet.setNombreChambres((int) map.get("nombreChambres"));// fait le cast de l'objet map en int
+            String description = (String) map.get("description");// fait le cast de l'objet map en String
 
-            // Tronquer la description si elle dépasse la longueur maximale
+            // Coupe la description si elle dépasse la longueur maximale
             if (description.length() > maxLength) {
                 description = description.substring(0, maxLength) + "...";
             }
 
-            chalet.setDescription(description);
-            chalet.setPrix((BigDecimal) map.get("prix"));
+            chalet.setDescription(description);//Recupere la description du chalet
+            chalet.setPrix((BigDecimal) map.get("prix")); //Recupere le prix du chalet
 
-            // Récupérez les photos pour ce chalet
+            // Récupère les photos associées à ce chalet
             List<String> photos = chaletDbContext.selectPhotosForChalet(chalet.getNumChalet());
             chalet.setListePhotos(photos);
 
-            // Ajoutez le chalet à la liste :
+            // Ajoute le chalet à la liste
             chalets.add(chalet);
         }
 
@@ -84,53 +89,54 @@ public class ChaletController {
         return "listeChalets";
     }
 
-
-    // 3) Réserver un chalet
+    // Page de réservation d'un chalet
     @GetMapping("/reserverChalet/{numChalet}")
     public String reserverChalet(@PathVariable int numChalet, Model model) {
-        // Récupérez les détails de l'utilisateur actuellement authentifié
+        // Récupère les détails de l'utilisateur actuellement authentifié
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            Client client = (Client) userDetails;
-            String prenom = client.getPrenom();
-            String courriel = client.getCourriel();
-            String telephone = client.getTelephone();  // Assurez-vous que cette variable est bien déclarée dans votre classe Client
+            Client client = (Client) userDetails; // Cast l'objet UserDetails en Client
+            String prenom = client.getPrenom(); // Récupère le prénom du client
+            String courriel = client.getCourriel(); // Récupère le courriel du client
+            String telephone = client.getTelephone();  // Récupère le numéro de téléphone du client
 
-            model.addAttribute("nomClient", prenom);  // Utilisez 'prenom' pour remplir 'nomClient'
+            // Ajoute les informations du client au modèle
+            model.addAttribute("nomClient", prenom);
             model.addAttribute("telephone", telephone);
             model.addAttribute("courriel", courriel);
 
-            // Maintenant, vous pouvez créer une nouvelle instance de Reservation avec les valeurs par défaut
+            // Crée une nouvelle instance de réservation avec les valeurs par défaut
             Reservation reservation = new Reservation();
             reservation.setNumChalet(numChalet);
-            reservation.setPrix(BigDecimal.ZERO); // Vous pouvez définir une valeur par défaut appropriée
+            reservation.setPrix(BigDecimal.ZERO); // Assurez-vous que votre classe Reservation a une méthode setPrix
 
-            // Assignez le numéro de téléphone du client à la réservation
-            reservation.setTelephone(telephone);  // Assurez-vous que votre classe Reservation a une méthode setTelephone
+            // Assigne le numéro de téléphone du client à la réservation
+            reservation.setTelephone(telephone);
 
             model.addAttribute("reservation", reservation);
         }
 
+        // Ajoute les détails du chalet au modèle
         model.addAttribute("chalet", chaletDbContext.selectChaletByNumero(numChalet));
         return "reservation";
     }
 
 
 
-
-    // 4) Confirmer la réservation
+    // Confirmation de la réservation d'un chalet
     @PostMapping("/confirmation")
     public String confirmReserverChalet(@ModelAttribute("reservation") @Valid Reservation reservation, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            // Erreur de validation, capturez le numChalet
+            // En cas d'erreur de validation, capture le numéro de chalet
             int numChalet = reservation.getNumChalet();
 
-            // Redirigez l'utilisateur vers la page du formulaire avec le numChalet en tant que paramètre
+            // Redirige l'utilisateur vers la page de réservation avec le numéro de chalet en tant que paramètre
             return "redirect:/reserverChalet/" + numChalet + "?error=true";
         }
 
         // Calcul de la date de début et de fin basée sur dateLocation et duree
+        //Partie rajoutée par pour calculer la date de fin et empecher le chevauchement de date de reservation
         Date startDate = reservation.getStartDate();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startDate);
@@ -183,7 +189,7 @@ public class ChaletController {
         return "confirmation";
     }
 
-
+    // Afficher les détails d'une photo
     @GetMapping("/photo")
     public String showPhotoDetails(@RequestParam("numChalet") int numChalet, Model model) {
         // Récupérez les détails du chalet en utilisant numChalet
@@ -192,8 +198,8 @@ public class ChaletController {
         System.out.println("Photos: " + chalet.getListePhotos());
 
         if (chalet == null) {
-            // Handle the error, e.g., redirect to an error page or set an error message
-            return "error";  // Change to the appropriate view name for your error page
+            // Gérez l'erreur,
+            return "error";
         }
 
         // Ajoutez les détails du chalet et la liste des photos au modèle
@@ -201,36 +207,9 @@ public class ChaletController {
         model.addAttribute("photos", chalet.getListePhotos());
         model.addAttribute("test", "Ceci est un test");
         System.out.println("Type de la liste des photos : " + chalet.getListePhotos().getClass().getName());
-        // Retournez le nom de la vue JSP
+
+
         return "photo";
     }
-
-
 }
 
-
-// 4) Confirmer la réservation
-   /* @PostMapping("/confirmation")
-    public String confirmReserverChalet(Reservation reservation, Model model) {
-        int numReservation = chaletDbContext.insertReservation(reservation);
-        model.addAttribute("numReservation", numReservation);
-
-       // Créez une instance d'EmailService (vous pouvez l'injecter si elle est gérée par Spring)
-        EmailService emailService = new EmailService();
-
-        // Configurez l'e-mail de confirmation
-        String destinataire = "adresse@example.com"; // Remplacez par l'adresse de l'utilisateur
-        String sujet = "Confirmation de réservation";
-        String contenu = "Votre réservation a été confirmée. Numéro de réservation : " + numReservation;
-
-        try {
-            // Envoyez l'e-mail de confirmation
-            emailService.sendEmail(destinataire, sujet, contenu);
-            model.addAttribute("emailSent", true);
-        } catch (Exception e) {
-            model.addAttribute("emailSent", false);
-            e.printStackTrace();
-        }
-
-        return "Confirmation";
-    }*/

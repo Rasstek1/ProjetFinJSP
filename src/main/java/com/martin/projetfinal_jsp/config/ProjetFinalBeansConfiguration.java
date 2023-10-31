@@ -30,6 +30,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class ProjetFinalBeansConfiguration {
+
     // Configuration des règles d'accès aux routes
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -74,30 +75,26 @@ public class ProjetFinalBeansConfiguration {
     }
 
     // Configuration du gestionnaire d'utilisateurs
-
     @Bean(name = "userManagerBean")
     public MyUserManager userManagerBean(AuthenticationDataContext authenticationDataContext, PasswordEncoder passwordEncoder) {
-        MyUserManager usermanager = new MyUserManager(authenticationDataContext, passwordEncoder);
+        MyUserManager userManager = new MyUserManager(authenticationDataContext, passwordEncoder);
 
-        // Création de l'utilisateur admin s'il n'existe pas déjà
-        if (usermanager.userExists("admin")) { //jai enlever le! car ca essayais de creer un user admin a chaque fois et causais une erreur de UserExists!
+        if (userManager.userExists("admin")) {
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-            Client client= new Client("admin@email.com", "Ad", "Admin", "123 Admin Street", "819-666-8888", "Password", authorities);
+            Client client = new Client("admin@email.com", "Ad", "Admin", "123 Admin Street", "819-666-8888", "Password", authorities);
 
-            usermanager.createUser(client);
+            userManager.createUser(client);
         }
 
-        return usermanager;
+        return userManager;
     }
-
-
 
     // Configuration du fournisseur d'authentification
     @Bean
-    MyAuthenticationProvider authenticationProvider(@Qualifier("myUserManager") MyUserManager uManager) {
-        return new MyAuthenticationProvider(uManager);
+    MyAuthenticationProvider authenticationProvider(@Qualifier("userManagerBean") MyUserManager userManager) {
+        return new MyAuthenticationProvider(userManager);
     }
 
     // Configuration de la base de données pour les chalets

@@ -28,15 +28,14 @@ public class AdminController {
 
     private static final String UPLOAD_DIR = "src/main/resources/static/uploads/";
 
-
-    // Ajouter un chalet
+    // Afficher le formulaire pour ajouter un chalet
     @GetMapping("/ajouterChalet")
     public String ajouterChaletForm(Model model) {
         model.addAttribute("chalet", new Chalet());
         return "administration";
     }
 
-    //Methode pour la liste de chalet sur admininistration.jsp
+    // Afficher la liste des chalets sur la page d'administration
     @GetMapping("/administration")
     public String listeChalets(Model model) {
         List<Chalet> chalets = chaletDbContext.selectAllChaletsForAdmin();
@@ -44,15 +43,15 @@ public class AdminController {
         return "listeChalets";
     }
 
-    // Cette méthode récupère l'extension d'un fichier
+    // Méthode privée pour obtenir l'extension d'un fichier
     private String getFileExtension(String filename) {
         int dotIndex = filename.lastIndexOf('.');
         return (dotIndex >= 0) ? filename.substring(dotIndex) : "";
     }
 
-    // Cette méthode sauvegarde un fichier dans le répertoire d'uploads
+    // Méthode pour sauvegarder un fichier dans le répertoire d'uploads
     private void saveFile(String filename, MultipartFile file) throws IOException {
-        String uploadDirectory = "src/main/resources/static/uploads/";
+        String uploadDirectory = UPLOAD_DIR;
         Path uploadPath = Paths.get(uploadDirectory);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
@@ -61,11 +60,10 @@ public class AdminController {
         Files.write(filePath, file.getBytes());
     }
 
+    // Ajouter un chalet avec des photos
     @PostMapping("/ajouterChalet")
     public String ajouterChalet(@ModelAttribute Chalet chalet,
                                 @RequestParam("photos") MultipartFile[] photos, Model model) throws IOException {
-        System.out.println("Méthode ajouterChalet appelée.");
-
         // Initialisation de la liste de photos pour le chalet
         chalet.setListePhotos(new ArrayList<>());
 
@@ -94,13 +92,13 @@ public class AdminController {
         return "redirect:/listeChalets";
     }
 
-
-
+    // Modifier un chalet avec des photos
     @PostMapping("/modifierChalet")
     public String modifierChalet(@ModelAttribute Chalet chalet,
                                  @RequestParam("photos") MultipartFile[] photos, Model model) throws IOException {
-        // Vérifiez si l'utilisateur a les autorisations d'administration ici
-        // Assurez-vous que la classe ChaletDbContext a une méthode updateChalet(Chalet chalet) implémentée
+        // Vérifiez si l'utilisateur a les autorisations d'administration
+
+        // ChaletDbContext méthode updateChalet(Chalet chalet) implémentée
         chaletDbContext.updateChalet(chalet);
 
         // Mettez à jour les photos du chalet
@@ -109,27 +107,28 @@ public class AdminController {
         return "redirect:/admin/listeChalets";
     }
 
+    // Méthode pour supprimer un fichier
     private void deleteFile(String fileName) {
-        String uploadDirectory = "src/main/resources/static/uploads/";
+        String uploadDirectory = UPLOAD_DIR;
         Path filePath = Paths.get(uploadDirectory + fileName);
 
         try {
             Files.delete(filePath);
         } catch (IOException e) {
             e.printStackTrace();
-            // Gérer les erreurs de suppression de fichier ici
+            // Gérer les erreurs de suppression de fichier
         }
     }
 
-
+    // Méthode privée pour mettre à jour les photos d'un chalet
     private void updatePhotos(int numChalet, MultipartFile[] photos, Model model) throws IOException {
         // Supprimez d'abord toutes les photos existantes pour ce chalet
         for (String existingPhoto : chaletDbContext.getPhotos(numChalet)) {
             chaletDbContext.supprimerPhoto(numChalet, existingPhoto);
-            deleteFile(existingPhoto); // Supprimez également le fichier physique de votre système de fichiers local
+            deleteFile(existingPhoto); // Supprimez le fichier physique des fichiers local
         }
 
-        // Ensuite, insérez les nouvelles photos
+        // Insérez les nouvelles photos
         int counter = 1; // Utilisé pour nommer les photos
         for (MultipartFile photo : photos) {
             if (!photo.isEmpty()) {
@@ -148,10 +147,10 @@ public class AdminController {
         }
     }
 
-
+    // Ajouter une photo à un chalet
     @PostMapping("/ajouterPhoto/{numChalet}")
     public String ajouterPhoto(@PathVariable int numChalet, @RequestParam("photo") MultipartFile photo, Model model) {
-        // Traitez l'ajout de la photo ici
+        // Traitez l'ajout de la photo
         try {
             String originalFilename = photo.getOriginalFilename();
             String fileName = "chalet" + numChalet + "_" + getFileExtension(originalFilename);
@@ -164,12 +163,13 @@ public class AdminController {
         return "redirect:/admin/modifierChalet/{numChalet}";
     }
 
+    // Supprimer une photo d'un chalet
     @PostMapping("/supprimerPhoto/{numChalet}/{fileName}")
     public String supprimerPhoto(@PathVariable int numChalet, @PathVariable String fileName, Model model) {
         // Traitez la suppression de la photo ici
         try {
-            // Supprimez également le fichier physique de votre système de fichiers local ici
-            // Assurez-vous de gérer les exceptions appropriées
+            // Supprimez également le fichier physique des fichiers local
+            // Gérer les exceptions appropriées
             chaletDbContext.supprimerPhoto(numChalet, fileName);
             deleteFile(fileName);
         } catch (Exception e) {
@@ -178,5 +178,6 @@ public class AdminController {
         }
         return "redirect:/admin/modifierChalet/{numChalet}";
     }
+
 
 }

@@ -12,18 +12,24 @@ public class EmailConfig {
 
     @Bean
     public JavaMailSender javaMailSender() {
+        // Création d'une instance de JavaMailSenderImpl pour envoyer des e-mails
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
 
-        // Utilisez des variables d'environnement ou un fichier de propriétés pour ces valeurs
-        mailSender.setUsername("nitramenicar@gmail.com");
-        mailSender.setPassword("IsaLeoEliot1");
+        // Configuration du serveur SMTP de Gmail
+        mailSender.setHost("smtp.gmail.com"); // Définition de l'hôte SMTP (Gmail)
+        mailSender.setPort(587); // Définition du port SMTP (587 est le port TLS de Gmail)
 
+        // Configuration des informations d'identification (nom d'utilisateur et mot de passe) pour se connecter à Gmail
+        mailSender.setUsername("nitramenicar@gmail.com"); // Remplacez par votre propre adresse e-mail Gmail
+        mailSender.setPassword("IsaLeoEliot1"); // Remplacez par votre propre mot de passe Gmail
+
+        // Configuration des propriétés pour activer le chiffrement TLS et l'authentification SMTP
         Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true"); // Activation du chiffrement TLS
+        props.put("mail.smtp.auth", "true"); // Activation de l'authentification SMTP
 
+        // Retourne l'instance configurée de JavaMailSenderImpl pour être utilisée par l'application
         return mailSender;
     }
 }
+

@@ -20,9 +20,10 @@
             <h6 class="m-0 font-weight-bold text-primary">Connexion</h6>
         </div>
         <div class="card-body">
-<p>Vous êtes déconnecté!</p>
+            <p>Vous êtes déconnecté!</p>
         </div>
     </div>
+    <div style="height: 100px"></div>
 </div>
 </body>
 <%@ include file="footer.jsp" %>

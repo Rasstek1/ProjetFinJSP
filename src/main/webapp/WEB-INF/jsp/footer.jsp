@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <div id="footer" class="footer-container" >
     <div class="footer-section">
@@ -20,14 +20,27 @@
             <li>
                 <a href="${pageContext.request.contextPath}/accueil">Accueil</a>
             </li>
-            <li>
-                <a href="${pageContext.request.contextPath}/listeChalets">Réservation</a>
-            </li>
-            <li>
-                <a href="${pageContext.request.contextPath}/admin">Administration</a>
-            </li>
+            <c:if test="${not empty pageContext.request.userPrincipal}">
+                <li>
+                    <a href="${pageContext.request.contextPath}/listeChalets">Réservation</a>
+                </li>
+            </c:if>
+            <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+                <li>
+                    <a href="${pageContext.request.contextPath}/admin/ajouterChalet">Administration</a>
+                </li>
+            </c:if>
+            <c:if test="${empty pageContext.request.userPrincipal}">
+                <li>
+                    <a href="${pageContext.request.contextPath}/connexion">Se connecter</a>
+                </li>
+                <li>
+                    <a href="${pageContext.request.contextPath}/login/register">S'enregistrer</a>
+                </li>
+            </c:if>
         </ul>
     </div>
+
 </div>
 
 
