@@ -91,7 +91,7 @@ public class ChaletController {
 
     // Page de réservation d'un chalet
     @GetMapping("/reserverChalet/{numChalet}")
-    public String reserverChalet(@PathVariable int numChalet, Model model) {
+    public String reserverChalet(@PathVariable int numChalet, @RequestParam(name = "dateError", required = false) boolean dateError, Model model) {
         // Récupère les détails de l'utilisateur actuellement authentifié
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
@@ -119,8 +119,13 @@ public class ChaletController {
 
         // Ajoute les détails du chalet au modèle
         model.addAttribute("chalet", chaletDbContext.selectChaletByNumero(numChalet));
+
+        // Ajoute l'attribut "dateError" au modèle
+        model.addAttribute("dateError", dateError);
+
         return "reservation";
     }
+
 
 
 

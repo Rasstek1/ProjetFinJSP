@@ -1,3 +1,4 @@
+<%@ page import="java.time.LocalDate" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -24,10 +25,20 @@
 
 
         <div class="card-body">
+            <!-- Vérification si la reservation est présent dans le modèle -->
             <c:if test="${param.error == 'true'}">
                 <div class="alert alert-danger" role="alert">
                     <p>Ce chalet n'est pas disponible pour les dates sélectionnées.</p>
                 </div>
+            </c:if>
+            <!-- Vérification si dateError est présent dans le modèle -->
+            <c:if test="${dateError != null}">
+                <script>
+                    // Affichage d'une alerte si dateError est vrai
+                    if (${dateError}) {
+                        alert("La date de début ne peut pas être antérieure à la date actuelle.");
+                    }
+                </script>
             </c:if>
 
 
@@ -53,8 +64,9 @@
 
                 <div class="form-group">
                     <label for="startDate">Date de Réservation :</label>
-                    <input type="date" class="form-control" id="startDate" name="startDate" required>
+                    <input type="date" class="form-control" id="startDate" name="startDate" required min="<%= LocalDate.now() %>" />
                 </div>
+
 
 
                 <div class="form-group">
