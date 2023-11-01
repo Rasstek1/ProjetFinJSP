@@ -7,6 +7,7 @@
 <%@ include file="header.jsp" %>
 
 <body>
+<div class="background">
 <div class="content" id="content">
     <div class="row">
 
@@ -14,12 +15,12 @@
             <div class="card shadow mb-4 form-container">
 
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Ajout de Chalet</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Bienvenue</h6>
                 </div>
 
 
                 <div class="card-body">
-                    <h2>Bienvenue sur Les chalets du Québec</h2>
+                    <h2>Les chalets du Québec</h2>
                 </div>
 <p style="margin:20px;"><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi assumenda beatae delectus eius est harum ipsa,
     labore laudantium minus molestias numquam ratione reprehenderit, sapiente tempore. Dignissimos et quia ut?</span>
@@ -36,7 +37,7 @@
         </div>
     </div>
 </div>
-
+</div>
 </body>
 <%@ include file="footer.jsp" %>
 

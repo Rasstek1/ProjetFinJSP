@@ -73,7 +73,7 @@
                     </c:if>
                     <c:if test="${not empty pageContext.request.userPrincipal}">
                         <li class="nav-item">
-                            <span class="nav-link" style="font-weight: 700; color: deepskyblue">Bonjour, ${pageContext.request.userPrincipal.name}!</span>
+                            <span class="nav-link" style="font-weight: 700; color: orangered">Bonjour, ${pageContext.request.userPrincipal.name}!</span>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/motDePasse">Changer le mot de passe</a>
