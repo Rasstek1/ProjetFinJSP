@@ -24,13 +24,12 @@
 
 
         <div class="card-body">
-            <c:if test="${availability != null}">
+            <c:if test="${param.error == 'true'}">
                 <div class="alert alert-danger" role="alert">
-                    <c:if test="${not availability}">
-                        <p>Ce chalet n'est pas disponible pour les dates sélectionnées.</p>
-                    </c:if>
+                    <p>Ce chalet n'est pas disponible pour les dates sélectionnées.</p>
                 </div>
             </c:if>
+
 
             <form action="${pageContext.request.contextPath}/confirmation" method="post">
                 <input type="hidden" name="numChalet" value="${chalet.numChalet}" />
