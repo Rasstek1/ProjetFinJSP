@@ -38,7 +38,7 @@
         <!-- Logo et titre à gauche -->
         <a class="navbar-brand d-flex align-items-center" href="${pageContext.request.contextPath}/accueil">
             <img src="${pageContext.request.contextPath}/img/Logo.png" alt="Logo" class="logo-img"/>
-            <h2 class="brand-name ml-2" style="color:black;">Les chalets du  <span style="color:#007dc7; font-weight: bold;">Québec</span></h2>
+            <h2 class="brand-name ml-2" style="color:black;">Les chalets<br> du  <span style="color:#007dc7; font-weight: bold;">Québec</span></h2>
         </a>
 
         <!-- Barre de navigation à droite -->

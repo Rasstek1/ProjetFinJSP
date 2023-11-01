@@ -94,7 +94,7 @@ public class ChaletController {
     public String reserverChalet(@PathVariable int numChalet, @RequestParam(name = "dateError", required = false) boolean dateError, Model model) {
         // Récupère les détails de l'utilisateur actuellement authentifié
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {//Si l'utilisateur est connecté
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             Client client = (Client) userDetails; // Cast l'objet UserDetails en Client
             String prenom = client.getPrenom(); // Récupère le prénom du client

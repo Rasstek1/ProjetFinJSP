@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="photosInput" class="form-label">Télécharger d'autres photos :</label>
+                            <label for="photosInput" class="form-label">Télécharger des photos :</label>
                             <input type="file" name="photos" id="photosInput" class="form-control" multiple/>
                         </div>
 

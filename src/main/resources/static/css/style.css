@@ -95,7 +95,7 @@ header {
 
 .header-bg {
     background-color: white; /* Couleur de fond du header */
-    padding: 15px; /* Espacement interne du header */
+    padding: 5px; /* Espacement interne du header */
 }
 
 header h2 {
@@ -282,7 +282,7 @@ header h2 {
 .footer-links a {
     text-decoration: none; /* Pour enlever le soulignement */
     color: #fff; /* Couleur des liens */
-font-weight: bold;
+    font-weight: bold;
 }
 
 .footer-links a:hover {
@@ -309,7 +309,6 @@ font-weight: bold;
 
 
 /***********************************************************************************************/
-
 
 
 

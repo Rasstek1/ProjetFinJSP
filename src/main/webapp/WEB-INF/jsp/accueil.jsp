@@ -11,7 +11,7 @@
 <div class="content" id="content">
     <div class="row">
 
-        <div class="col-md-6 mx-auto">
+        <div class="col-md-9 mx-auto">
             <div class="card shadow mb-4 form-container">
 
                 <div class="card-header py-3">
